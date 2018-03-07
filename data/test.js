@@ -76,7 +76,11 @@ var data = [
         'answer': 'Bùa'
     },
     {
-        'question': 'Hàng tuần lần đầu chia sẻ Thư Viện hoặc triệu hồi, phần thưởng là?Bùa Thần Bí Chó cưng của Kyonshi Imouto tên là gì?',
+        'question': 'Hàng tuần lần đầu chia sẻ Thư Viện hoặc triệu hồi, phần thưởng là?',
+        'answer': 'Bùa Thần Bí'
+    },
+    {
+        'question': 'Chó cưng của Kyonshi Imouto tên là gì?',
         'answer': 'Cà Chua'
     },
     {
@@ -481,7 +485,7 @@ var data = [
     },
     {
         'question': 'Nguyên liệu thăng cáp Ngự Hồn không gồm cái nào dưới đây',
-        'answer': ''
+        'answer': 'Khuyết ngọc'
     },
     {
         'question': 'Nguyên liệu thăng cấp thức thần không gồm cái nào dưới đây',
@@ -525,7 +529,7 @@ var data = [
     },
     {
         'question': 'Trong các thuật pháp sau, thuật pháp nào có hiệu ứng khống chế',
-        'answer': ''
+        'answer': 'Băng phong bạo tuyết'
     },
     {
         'question': 'Trong các thuật pháp sau, thuật pháp nào có thể bảo vệ đồng đội',

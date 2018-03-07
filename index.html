@@ -4,109 +4,130 @@
     <title>My first Vue app</title>
     <meta charset="UTF-8">
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
     <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/vue-router@2.0.0/dist/vue-router.js"></script>
     <script src="data/test.js"></script>
 </head>
 <body>
 <div id="app">
-    <div class="container">
-        <h1 class="text-center">Mật thư thời khắc đối đầu</h1>
-        <div class="row">
-            <div class="text-center">
-                <div style="width: 60%; margin: 0 auto">
-                    <input v-model="question" placeholder="Enter keywords" class="form-control">
-                </div>
-            </div>
-            <br/>
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover" >
-                    <thead>
-                    <td>Câu hỏi</td>
-                    <td width="20%">Đáp án</td>
-                    </thead>
-                    <tbody>
-                    <tr v-for="item in message">
-                        <td>{{item.question}}</td>
-                        <td>{{item.answer}}</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="text-center">
-                <a class="btn btn-info" href="#app">Go top</a>
-            </div>
-        </div>
-        <!--<ul v-model="message">-->
-            <!--<li v-for="item in message">-->
-                <!--{{ item.question + " - " + item.answer}}-->
-            <!--</li>-->
-        <!--</ul>-->
-    </div>
+    <p>
+        <router-link to="/5pm">Thời khắc đối đầu</router-link>
+        <router-link to="/sumar">Bùa hiện thế</router-link>
+        <router-link to="/hunt">Truy nã mật</router-link>
+    </p>
+    <router-view></router-view>
 </div>
 <br>
 <br>
-<div class="container">
-    <div class="row">
-        <div class="text-center">
-            <img width="400px" src="data/img/World_Summon_Symbol-1.png">
-        </div>
-    </div>
-    <br/><br/><br/><br/>
-    <div class="row">
-        <div class="text-center">
-            <img width="400px" src="data/img/World_Summon_Symbol-2.png">
-        </div>
-    </div>
-</div>
 
 <script>
-    var app = new Vue({
-        el: '#app',
-        data: {
+    // const Foo = {template: '<div>foo</div>'}
+    // const Bar = {template: '<div>bar</div>'}
+    var data1 = {
             message: data,
             question: ''
+        };
+    const FivePm = {
+        template: '<div class="container">\n' +
+        '        <h1 class="text-center">Mật thư thời khắc đối đầu</h1>\n' +
+        '        <div class="row">\n' +
+        '            <div class="text-center">\n' +
+        '                <div style="width: 60%; margin: 0 auto">\n' +
+        '                    <input v-model="question" placeholder="Enter keywords" class="form-control">\n' +
+        '                </div>\n' +
+        '            </div>\n' +
+        '            <br/>\n' +
+        '            <div class="table-responsive">\n' +
+        '                <table class="table table-bordered table-hover" >\n' +
+        '                    <thead>\n' +
+        '                    <td>Câu hỏi</td>\n' +
+        '                    <td width="20%">Đáp án</td>\n' +
+        '                    </thead>\n' +
+        '                    <tbody>\n' +
+        '                    <tr v-for="item in message">\n' +
+        '                        <td>{{item.question}}</td>\n' +
+        '                        <td>{{item.answer}}</td>\n' +
+        '                    </tr>\n' +
+        '                    </tbody>\n' +
+        '                </table>\n' +
+        '            </div>\n' +
+        '            <div class="text-center">\n' +
+        '                <a class="btn btn-info" href="#app">Go top</a>\n' +
+        '            </div>\n' +
+        '        </div></div>',
+        data: function () {
+            return data1
         },
-        watch: {
-            question: function () {
-                this.getAnswer(this.question.trim().toLowerCase());
-            }
-        },
-        methods: {
-            getAnswer: function (newQuest) {
-                var searching = [];
-                console.log('search '+newQuest);
-                if(newQuest === '')
-                {
-                    this.message = data;
+            watch: {
+                question: function () {
+                    this.getAnswer(this.question.trim().toLowerCase());
                 }
-                else{
-                    var after_split_quest = newQuest.split(' ');
-                    for(var i=0; i < after_split_quest.length; i++)
-                    {
-                        if(after_split_quest[i] !== '')
-                        {
-                            data.forEach(function (value) {
-                                if(value.question.toLowerCase().indexOf(after_split_quest[i]) !== -1)
-                                {
-                                    console.log(1);
-                                    searching.push(value);
-                                }
-                            })
-                        }
+            },
+            methods: {
+                getAnswer: function (newQuest) {
+                    var searching = [];
+                    console.log('search ' + newQuest);
+                    if (newQuest === '') {
+                        this.message = data;
                     }
-                    console.log(searching);
-                    this.message = searching;
+                    else {
+                                data.forEach(function (value) {
+                                    if (value.question.toLowerCase().indexOf(newQuest) !== -1) {
+                                        searching.push(value);
+                                    }
+                                })
+                        // console.log(searching);
+                        this.message = searching;
+                    }
                 }
             }
-        }
+    }
+    const SummonAR = {
+        template: '<div class="container">\n' +
+        '<div class="row">\n' +
+        '<div class="text-center">\n' +
+        '<img width="400px" src="data/img/World_Summon_Symbol-1.png">\n' +
+        '</div>\n' +
+        '</div>\n' +
+        '<br/><br/><br/><br/>\n' +
+        '<div class="row">\n' +
+        '<div class="text-center">\n' +
+        '<img width="400px" src="data/img/World_Summon_Symbol-2.png">\n' +
+        '</div>\n' +
+        '</div>\n' +
+        '</div>'
+    }
+    const Hunt = {
+        template: `<div>
+        <h1>Hunt content</h1>
+        <h2>test abc</h2>
+        </div>`
+    }
+
+    const routes = [
+        {path: '/5pm', component: FivePm},
+        {path: '/sumar', component: SummonAR},
+        {path: '/hunt', component: Hunt}
+    ]
+
+    const router = new VueRouter({
+        routes // short for `routes: routes`
     })
+
+    var app = new Vue({
+        router
+    }).$mount('#app')
 </script>
 </body>
 </html>
