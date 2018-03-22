@@ -82,12 +82,27 @@
                         this.message = data;
                     }
                     else {
+//<<<<<<< HEAD
                                 data.forEach(function (value) {
                                     if (value.question.toLowerCase().indexOf(newQuest) !== -1) {
                                         searching.push(value);
                                     }
                                 })
                         // console.log(searching);
+//=======
+//                        var after_split_quest = newQuest.split(' ');
+//                        for (var i = 0; i < after_split_quest.length; i++) {
+//                            if (after_split_quest[i] !== '') {
+//                                data.forEach(function (value) {
+//                                    if (value.question.toLowerCase().indexOf(after_split_quest[i]) !== -1) {
+//                                        console.log(1);
+//                                        searching.push(value);
+//                                    }
+ //                               })
+  //                          }
+   //                     }
+    //                    console.log(searching);
+//>>>>>>> d3f3d5376df6200f1ba2796fc99b9b21fa6958fd
                         this.message = searching;
                     }
                 }
@@ -108,6 +123,7 @@
         '</div>\n' +
         '</div>'
     }
+//<<<<<<< HEAD
     const Hunt = {
         template: `<div>
         <h1>Hunt content</h1>
@@ -119,6 +135,12 @@
         {path: '/5pm', component: FivePm},
         {path: '/sumar', component: SummonAR},
         {path: '/hunt', component: Hunt}
+//=======
+//
+ //   const routes = [
+ //       {path: '/5pm', component: FivePm},
+//        {path: '/sumar', component: SummonAR}
+//>>>>>>> d3f3d5376df6200f1ba2796fc99b9b21fa6958fd
     ]
 
     const router = new VueRouter({
@@ -126,7 +148,45 @@
     })
 
     var app = new Vue({
+//<<<<<<< HEAD
         router
+//=======
+  //      router,
+        // el: '#app',
+        // data: {
+        //     message: data,
+        //     question: ''
+        // },
+    //     watch: {
+    //         question: function () {
+    //             this.getAnswer(this.question.trim().toLowerCase());
+    //         }
+    //     },
+    //     methods: {
+    //         getAnswer: function (newQuest) {
+    //             var searching = [];
+    //             console.log('search ' + newQuest);
+    //             if (newQuest === '') {
+    //                 this.message = data;
+    //             }
+    //             else {
+    //                 var after_split_quest = newQuest.split(' ');
+    //                 for (var i = 0; i < after_split_quest.length; i++) {
+    //                     if (after_split_quest[i] !== '') {
+    //                         data.forEach(function (value) {
+    //                             if (value.question.toLowerCase().indexOf(after_split_quest[i]) !== -1) {
+    //                                 console.log(1);
+    //                                 searching.push(value);
+    //                             }
+    //                         })
+    //                     }
+    //                 }
+    //                 console.log(searching);
+    //                 this.message = searching;
+    //             }
+    //         }
+    //     }
+//>>>>>>> d3f3d5376df6200f1ba2796fc99b9b21fa6958fd
     }).$mount('#app')
 </script>
 </body>
