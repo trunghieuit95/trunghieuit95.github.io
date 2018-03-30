@@ -18,6 +18,7 @@
     <script src="https://unpkg.com/vue"></script>
     <script src="https://unpkg.com/vue-router@2.0.0/dist/vue-router.js"></script>
     <script src="data/test.js"></script>
+    <script src="data/hunt.js"></script>
 </head>
 <body>
 <div id="app">
@@ -38,6 +39,10 @@
             message: data,
             question: ''
         };
+    var data2 = {
+      hint : data_hunt,
+        hint_keyword : ''
+    };
     const FivePm = {
         template: '<div class="container">\n' +
         '        <h1 class="text-center">Mật thư thời khắc đối đầu</h1>\n' +
@@ -62,9 +67,6 @@
         '                    </tbody>\n' +
         '                </table>\n' +
         '            </div>\n' +
-        '            <div class="text-center">\n' +
-        '                <a class="btn btn-info" href="#app">Go top</a>\n' +
-        '            </div>\n' +
         '        </div></div>',
         data: function () {
             return data1
@@ -82,27 +84,12 @@
                         this.message = data;
                     }
                     else {
-//<<<<<<< HEAD
                                 data.forEach(function (value) {
                                     if (value.question.toLowerCase().indexOf(newQuest) !== -1) {
                                         searching.push(value);
                                     }
                                 })
                         // console.log(searching);
-//=======
-//                        var after_split_quest = newQuest.split(' ');
-//                        for (var i = 0; i < after_split_quest.length; i++) {
-//                            if (after_split_quest[i] !== '') {
-//                                data.forEach(function (value) {
-//                                    if (value.question.toLowerCase().indexOf(after_split_quest[i]) !== -1) {
-//                                        console.log(1);
-//                                        searching.push(value);
-//                                    }
- //                               })
-  //                          }
-   //                     }
-    //                    console.log(searching);
-//>>>>>>> d3f3d5376df6200f1ba2796fc99b9b21fa6958fd
                         this.message = searching;
                     }
                 }
@@ -121,26 +108,69 @@
         '<img width="400px" src="data/img/World_Summon_Symbol-2.png">\n' +
         '</div>\n' +
         '</div>\n' +
-        '</div>'
+        '</div>',
+
     }
-//<<<<<<< HEAD
+
     const Hunt = {
-        template: `<div>
-        <h1>Hunt content</h1>
-        <h2>test abc</h2>
-        </div>`
+        template: '<div class="container">\n' +
+        '        <h1 class="text-center">Truy nã mật</h1>\n' +
+        '        <div class="row">\n' +
+        '            <div class="text-center">\n' +
+        '                <div style="width: 60%; margin: 0 auto">\n' +
+        '                    <input v-model="hint_keyword" placeholder="Enter hint" class="form-control">\n' +
+        '                </div>\n' +
+        '            </div>\n' +
+        '            <br/>\n' +
+        '            <div class="table-responsive">\n' +
+        '                <table class="table table-bordered table-hover" >\n' +
+        '                    <thead>\n' +
+        '                    <td>Câu hỏi</td>\n' +
+        '                    <td width="30%">Đáp án</td>\n' +
+        '                    <td width="30%">Địa điểm</td>\n' +
+        '                    </thead>\n' +
+        '                    <tbody>\n' +
+        '                    <tr v-for="item in hint">\n' +
+        '                        <td>{{item.hint}}</td>\n' +
+        '                        <td>{{item.answer}}</td>\n' +
+        '                        <td>{{item.locate}}</td>\n' +
+        '                    </tr>\n' +
+        '                    </tbody>\n' +
+        '                </table>\n' +
+        '            </div>\n' +
+        '        </div></div>',
+        data: function () {
+            return data2
+        },
+        watch: {
+            hint_keyword: function () {
+                this.getAnswer(this.hint_keyword.trim().toLowerCase());
+            }
+        },
+        methods: {
+            getAnswer: function (newQuest) {
+                var searching = [];
+                console.log('search ' + newQuest);
+                if (newQuest === '') {
+                    this.hint = data_hunt;
+                }
+                else {
+                    data_hunt.forEach(function (value) {
+                        if (value.hint.toLowerCase().indexOf(newQuest) !== -1) {
+                            searching.push(value);
+                        }
+                    })
+                    // console.log(searching);
+                    this.hint = searching;
+                }
+            }
+        }
     }
 
     const routes = [
         {path: '/5pm', component: FivePm},
         {path: '/sumar', component: SummonAR},
         {path: '/hunt', component: Hunt}
-//=======
-//
- //   const routes = [
- //       {path: '/5pm', component: FivePm},
-//        {path: '/sumar', component: SummonAR}
-//>>>>>>> d3f3d5376df6200f1ba2796fc99b9b21fa6958fd
     ]
 
     const router = new VueRouter({
@@ -148,9 +178,7 @@
     })
 
     var app = new Vue({
-//<<<<<<< HEAD
         router
-//=======
   //      router,
         // el: '#app',
         // data: {
@@ -186,7 +214,6 @@
     //             }
     //         }
     //     }
-//>>>>>>> d3f3d5376df6200f1ba2796fc99b9b21fa6958fd
     }).$mount('#app')
 </script>
 </body>
