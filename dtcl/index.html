@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Team Fight Tatic</title>
+    <meta charset="UTF-8">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/vue-router@2.0.0/dist/vue-router.js"></script>
+    <script src="data/test.js"></script>
+    <script src="data/hunt.js"></script>
+    <style>
+      body{
+        background: #000;
+      }
+      h1{
+        color: aliceblue;
+        text-align: center;
+      }
+      #app{
+        margin: 0 auto;
+        /* width: 1024px; */
+        border: 1px solid red;
+      }
+      svg{
+        width:30%;
+      }
+      #hex{
+        stroke-width:2;
+        stroke: teal;
+        fill-opacity:0.6;
+        transition:fill-opacity .8s;
+      }
+    </style>
+</head>
+<body>
+<h1>Đấu trường chân lý</h1>
+
+<div id="app">
+  <div class="container">
+    <div class="row">
+      <div id="my-synergy" class="col-md-4">
+          <h2 class="text-center">Đội hình của bạn</h2>
+          <svg v-for="todo in todos" viewbox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="img" patternUnits="userSpaceOnUse" width="100" height="100">
+                <image xlink:href="https://farm4.staticflickr.com/3165/5733278274_2626612c70.jpg" x="-25" width="150" height="100" />
+              </pattern>
+            </defs>
+            <polygon id="hex" points="50 1 95 25 95 75 50 99 5 75 5 25" fill="url(#img)"/>
+          </svg>
+		  <div>
+			<h3>Sức mạnh đội hình</h3>
+		  </div>
+      </div>
+      <div id="wiki" class="col-md-8">
+        <h2 class="text-center">Tướng</h2>
+        <table class="table">
+			  <tr>
+				<td rowspan="2" colspan="2">Đấu trường chân lý</td>
+				<td colspan="10">Hệ</td>
+			  </tr>
+			  <tr>	
+				<td>Sát thủ</td>
+				<td>kiếm khách</td>
+				<td>đấu sĩ</td>
+				<td>nguyên tố</td>
+				<td>hộ vệ</td>
+				<td>xạ thủ</td>
+				<td>hiệp sĩ</td>
+				<td>cung thủ</td>
+				<td>hóa hình</td>
+				<td>pháp sư</td>
+			  </tr>
+			  <tr>
+				<td rowspan="13">Tộc</td>
+				<td>Ác quỷ</td>
+				<td>3</td>
+				<td>4</td>
+				<td>5</td>
+				<td>6</td>
+				<td>7</td>
+				<td>8</td>
+				<td>9</td>
+				<td>10</td>
+				<td>11</td>
+				<td>12</td>
+			  </tr>
+			  <tr>
+				<td>rồng</td>
+				<td>3</td>			  
+				<td>4</td>
+				<td>5</td>
+				<td>6</td>
+				<td>7</td>
+				<td>8</td>
+				<td>9</td>
+				<td>10</td>
+				<td>11</td>
+				<td>12</td>
+			  </tr>
+			  <tr>
+				<td>độc hành</td>
+				<td>3</td>			  
+				<td>4</td>
+				<td>5</td>
+				<td>6</td>
+				<td>7</td>
+				<td>8</td>
+				<td>9</td>
+				<td>10</td>
+				<td>11</td>
+				<td>12</td>
+			  </tr>
+			  <tr>
+				<td>băng quốc</td>
+				<td>3</td>			  
+				<td>4</td>
+				<td>5</td>
+				<td>6</td>
+				<td>7</td>
+				<td>8</td>
+				<td>9</td>
+				<td>10</td>
+				<td>11</td>
+				<td>12</td>
+			  </tr>
+			  <tr>
+				<td>người máy</td>
+				<td>3</td>			  
+				<td>4</td>
+				<td>5</td>
+				<td>6</td>
+				<td>7</td>
+				<td>8</td>
+				<td>9</td>
+				<td>10</td>
+				<td>11</td>
+				<td>12</td>
+			  </tr>
+			  <tr>
+				<td>đế chế</td>
+				<td>3</td>			  
+				<td>4</td>
+				<td>5</td>
+				<td>6</td>
+				<td>7</td>
+				<td>8</td>
+				<td>9</td>
+				<td>10</td>
+				<td>11</td>
+				<td>12</td>
+			  </tr>
+			  <tr>
+				<td>quý tộc</td>
+				<td>3</td>			  
+				<td>4</td>
+				<td>5</td>
+				<td>6</td>
+				<td>7</td>
+				<td>8</td>
+				<td>9</td>
+				<td>10</td>
+				<td>11</td>
+				<td>12</td>
+			  </tr>
+			  <tr>
+				<td>nhẫn giả</td>
+				<td>3</td>			  
+				<td>4</td>
+				<td>5</td>
+				<td>6</td>
+				<td>7</td>
+				<td>8</td>
+				<td>9</td>
+				<td>10</td>
+				<td>11</td>
+				<td>12</td>
+			  </tr>
+			  <tr>
+				<td>hải tặc</td>
+				<td>3</td>			  
+				<td>4</td>
+				<td>5</td>
+				<td>6</td>
+				<td>7</td>
+				<td>8</td>
+				<td>9</td>
+				<td>10</td>
+				<td>11</td>
+				<td>12</td>
+			  </tr>
+			  <tr>
+				<td>ma</td>
+				<td>3</td>			  
+				<td>4</td>
+				<td>5</td>
+				<td>6</td>
+				<td>7</td>
+				<td>8</td>
+				<td>9</td>
+				<td>10</td>
+				<td>11</td>
+				<td>12</td>
+			  </tr>
+			  <tr>
+				<td>hoang dã</td>
+				<td>3</td>			  
+				<td>4</td>
+				<td>5</td>
+				<td>6</td>
+				<td>7</td>
+				<td>8</td>
+				<td>9</td>
+				<td>10</td>
+				<td>11</td>
+				<td>12</td>
+			  </tr>
+			  <tr>
+				<td>hư không</td>
+				<td>3</td>			  
+				<td>4</td>
+				<td>5</td>
+				<td>6</td>
+				<td>7</td>
+				<td>8</td>
+				<td>9</td>
+				<td>10</td>
+				<td>11</td>
+				<td>12</td>
+			  </tr>
+			  <tr>
+				<td>yordle</td>
+				<td>3</td>			  
+				<td>4</td>
+				<td>5</td>
+				<td>6</td>
+				<td>7</td>
+				<td>8</td>
+				<td>9</td>
+				<td>10</td>
+				<td>11</td>
+				<td>12</td>
+			  </tr>
+		</table>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    var app = new Vue({
+    el: '#app',
+    data: {
+      todos: [
+        { text: 'Learn JavaScript' },
+        { text: 'Learn Vue' },
+        { text: 'Build something awesome' },
+        { text: 'Learn JavaScript' },
+        { text: 'Learn Vue' },
+        { text: 'Build something awesome' },
+        { text: 'Learn JavaScript' },
+        { text: 'Learn Vue' },
+        { text: 'Build something awesome' }
+      ]
+    }
+  })
+</script>
+
+</body>
+</html>
