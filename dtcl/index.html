@@ -18,261 +18,618 @@
     <script src="https://unpkg.com/vue"></script>
     <script src="https://unpkg.com/vue-router@2.0.0/dist/vue-router.js"></script>
     <script src="data/test.js"></script>
-    <script src="data/hunt.js"></script>
+    <script src="data/hero.js"></script>
     <style>
       body{
         background: #000;
+		color: white;
       }
       h1{
         color: aliceblue;
         text-align: center;
       }
-      #app{
-        margin: 0 auto;
-        /* width: 1024px; */
-        border: 1px solid red;
-      }
+	  table tr td {
+		  text-transform: capitalize
+	  }
       svg{
         width:30%;
       }
-      #hex{
+      .hex{
         stroke-width:2;
-        stroke: teal;
+        stroke: #999;
         fill-opacity:0.6;
         transition:fill-opacity .8s;
       }
+	  .hex-t1{
+		stroke-width:2;
+        stroke: #fff;
+      }
+	  .hex-t2{
+		stroke-width:2;
+        stroke: green;
+      }
+	  .hex-t3{
+		stroke-width:2;
+        stroke: cyan;
+      }
+	  .hex-t4{
+		stroke-width:2;
+        stroke: purple;
+      }
+	  .hex-t5{
+		stroke-width:2;
+        stroke: orange;
+      }
+	  .text-price{
+		fill:white;
+		}
+		.specific-buff .specific-title-buff{
+			background: burlywood;
+			color: maroon;
+			padding: 5px 5px;
+			border-radius: 5px;
+		}
+		.specific-buff p{
+			margin-top: 10px;
+			text-align: justify;
+			color: powderblue;
+		}
+		.class-buff .class-title-buff{
+			background: darkred;
+    		color: aliceblue;
+			padding: 5px 5px;
+			border-radius: 5px;
+		}
+		.class-buff p{
+			margin-top: 10px;
+			text-align: justify;
+			color: powderblue;
+		}
+	.avt-t1{
+        border: 1px solid #fff;
+		border-radius: 5px;
+		margin-bottom: 5px;
+      }
+	  .avt-t2{
+		border: 1px solid green;
+		border-radius: 5px;
+		margin-bottom: 5px;
+      }
+	  .avt-t3{
+		border: 1px solid cyan;
+		border-radius: 5px;
+		margin-bottom: 5px;
+      }
+	  .avt-t4{
+		border: 1px solid purple;
+		border-radius: 5px;
+		margin-bottom: 5px;
+      }
+	  .avt-t5{
+		border: 1px solid orange;
+		border-radius: 5px;
+		margin-bottom: 5px;
+      }
+	  footer{
+		text-align: center;
+		margin: 100px 0;
+		color: darkorchid;
+		border-top: 1px solid;
+		padding: 10px;
+		text-transform: capitalize;
+	  }
     </style>
 </head>
 <body>
+<p class="text-center"><img src="data/img/logo-hero.png" width="30%"></p>
 <h1>Đấu trường chân lý</h1>
 
 <div id="app">
   <div class="container">
     <div class="row">
       <div id="my-synergy" class="col-md-4">
-          <h2 class="text-center">Đội hình của bạn</h2>
-          <svg v-for="todo in todos" viewbox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="img" patternUnits="userSpaceOnUse" width="100" height="100">
-                <image xlink:href="https://farm4.staticflickr.com/3165/5733278274_2626612c70.jpg" x="-25" width="150" height="100" />
-              </pattern>
-            </defs>
-            <polygon id="hex" points="50 1 95 25 95 75 50 99 5 75 5 25" fill="url(#img)"/>
-          </svg>
+		  <h2 class="text-center">Đội hình của bạn</h2>
+			<!-- <div v-for="hero in heroes"> -->
+				<svg v-for="(hero, index) in heroes" viewbox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" v-on:click="removeData(index,hero.cId,hero.sId)">
+					<defs v-if="hero.heroId!=-1">
+						<pattern v-bind:id="'img'+index" patternUnits="userSpaceOnUse" width="100" height="100">
+							<image v-bind:xlink:href="hero.avartar" x="0" width="100" height="100" />
+						</pattern>
+					</defs>
+					<!-- <polygon class="hex" points="50 1 95 25 95 75 50 99 5 75 5 25" fill="url(#img)"/> -->
+					<polygon v-if="hero.heroId!=-1" v-bind:class="[hero.tier ? 0 : hex , 'hex-t'+hero.tier]" points="50 1 95 25 95 75 50 99 5 75 5 25" v-bind:fill="'url(#img'+index+')'"/>
+					<polygon v-if="hero.heroId==-1" class="hex" points="50 1 95 25 95 75 50 99 5 75 5 25" fill="#333"/>
+					<text v-if="hero.tier!=0 && hero.heroId!=-1" class="text-price" font-size="15" x="50" y="90" text-anchor="middle">${{hero.tier}}</text>
+				</svg>
+			<!-- </div> -->
 		  <div>
-			<h3>Sức mạnh đội hình</h3>
+			<h3 class="text-center">Sức mạnh đội hình</h3>
+			<!-- specific -->
+			<div class="specific-buff" v-if="specific[0]>=2">
+				<span class="specific-title-buff">Ác quỷ - Demon <span v-if="specific[0]>=2 && specific[0]<4">(2)</span><span v-if="specific[0]>=4 && specific[0]<6">(4)</span><span v-if="specific[0]>=6">(6)</span></span>
+				<p>Nhiều Ác Quỷ xuất hiện trong đội hình sẽ cho chúng cơ hội đốt cháy năng lượng của đối thủ, đồng thời gây sát thương dựa trên số năng lượng đã đốt. Tỉ lệ này tăng cao hơn khi có nhiều Ác Quỷ xuất hiện.</p>
+			</div>
+			<div class="specific-buff" v-if="specific[1]==2">
+				<span class="specific-title-buff">Rồng - Dragon <span>(2)</span></span>
+				<p>Khi hai tướng rồng xuất hiện trong đội hình, chúng sẽ được miễn nhiễm sát thương phép.</p>
+			</div>
+			<div class="specific-buff"  v-if="specific[2]==1">
+				<span class="specific-title-buff">Độc hành - Exile <span>(1)</span></span>
+				<p>Các Độc Hành bắt đầu trận đấu với một lá chắn nếu như không có bất kì vị tướng nào kề cận họ khi trận chiến bắt đầu.</p>
+			</div>
+			<div class="specific-buff"  v-if="specific[3]>=2">
+				<span class="specific-title-buff">Băng quốc - Gracial <span v-if="specific[3]>=2 && specific[3]<4">(2)</span><span v-if="specific[3]>=4">(4)</span></span>
+				<p>Nhiều Băng Quốc cùng xuất hiện trong đội hình cho họ cơ hội làm choáng đối thủ với đòn đánh của họ, càng nhiều tướng thuộc Băng Quốc thì tỉ lệ này càng được tăng cao.</p>
+			</div>
+			<div class="specific-buff"  v-if="specific[4]==1">
+				<span class="specific-title-buff">Người máy - Robot <span>(1)</span></span>
+				<p>Người Máy sẽ bắt đầu trận chiến với đầy bình năng lượng.</p>
+			</div>
+			<div class="specific-buff"  v-if="specific[5]>=2">
+				<span class="specific-title-buff">Đế chế - Imperial <span v-if="specific[5]>=2 && specific[5]<4">(2)</span><span v-if="specific[5]==4">(4)</span></span>
+				<p v-if="specific[5]>=2 && specific[5]<4">Nhiều Đế Chế xuất hiện trong đội hình sẽ cho ngẫu nhiên một tướng Đế Chế gấp đôi sát thương.</p>
+				<p v-if="specific[5]==4">Nếu mọi Đế Chế đều xuất hiện trong đội hình, tất cả bọn họ đều được gấp đôi sát thương.</p>
+			</div>
+			<div class="specific-buff"  v-if="specific[6]>=3">
+				<span class="specific-title-buff">Quý tộc - Noble <span v-if="specific[6]>=3 && specific[6]<6">(3)</span><span v-if="specific[6]==6">(6)</span></span>
+				<p v-if="specific[6]>=3 && specific[6]<6">Nhiều Quý Tộc xuất hiện trong đội hình sẽ cho ngẫu nhiên một đồng minh thêm giáp và hồi phục trên mỗi đòn đánh.</p>
+				<p v-if="specific[6]==6">Nếu mọi Quý Tộc đều xuất hiện trong đội hình, tất cả đội hình của bạn đều sẽ nhận thêm giáp và hồi phục trên mỗi đòn đánh</p>
+			</div>
+			<div class="specific-buff"  v-if="specific[7]==1 || specific[7]==4">
+				<span class="specific-title-buff">Nhẫn giả - Ninja <span v-if="specific[7]==1">(1)</span><span v-if="specific[7]==4">(4)</span></span>
+				<p v-if="specific[7]==1">Nếu chỉ có đúng một Nhẫn Giả trong đội hình, Nhẫn Giả đó nhận thêm SMCK.</p>
+				<p v-if="specific[7]==4">Nếu mọi Nhẫn Giả đều xuất hiện trong đội hình, tất cả Nhẫn Giả đều nhận được lượng lớn SMCK.</p>
+			</div>
+			<div class="specific-buff" v-if="specific[8]>=3">
+				<span class="specific-title-buff">Hải tặc - Pirate <span>(3)</span></span>
+				<p>Khi có đủ số Hải Tặc cần thiết trong đội hình, bạn sẽ nhận thêm một lượng vàng sau mỗi vòng</p>
+			</div>
+			<div class="specific-buff" v-if="specific[9]>=2">
+				<span class="specific-title-buff">Ma - Phantom <span>(2)</span></span>
+				<p>Khi có đủ số Ma xuất hiện trong đội hình, một tướng địch ngẫu nhiên sẽ bị nguyền rủa, khiến số máu khởi đầu của họ tụt giảm nghiêm trọng.</p>
+			</div>
+			<div class="specific-buff"  v-if="specific[10]>=2">
+				<span class="specific-title-buff">Hoang dã - Wild <span v-if="specific[10]>=2 && specific[10]<4">(2)</span><span v-if="specific[10]>=4">(4)</span></span>
+				<p v-if="specific[10]>=2 && specific[10]<4">Có nhiều Hoang Dã trong đội hình sẽ tăng tốc độ đánh cho chính họ.</p>
+				<p v-if="specific[10]>=4">Khi có đủ số tướng Hoang Dã trong đội hình, cả đội đều được tăng tốc độ đánh.</p>
+			</div>
+			<div class="specific-buff"  v-if="specific[11]>=3">
+				<span class="specific-title-buff">Hư không - Void <span>(3)</span></span>
+				<p>Khi có đủ số tướng Hư Không trong đội hình, đội hình của bạn sẽ bỏ qua một phần giáp của đối phương.</p>
+			</div>
+			<div class="specific-buff"  v-if="specific[12]>=3">
+				<span class="specific-title-buff">Yordle <span v-if="specific[12]>=3 && specific[12]<6">(3)</span><span v-if="specific[12]==6">(6)</span></span>
+				<p>Nhiều Yordle trong đội hình sẽ khiến cho đòn đánh của đối phương có tỉ lệ bị hụt. Càng nhiều Yordle xuất hiện thì tỉ lệ hụt càng cao.</p>
+			</div>
+			<!-- class -->
+			<div class="class-buff" v-if="classPassive[0]>=3">
+				<span class="class-title-buff">Sát thủ - Assassin <span v-if="classPassive[0]>=3 && classPassive[0]<6">(3)</span><span v-if="classPassive[0]>=6">(6)</span></span>
+				<p>Có nhiều Sát Thủ trong đội hình sẽ tăng thêm sát thương chí mạng cho họ, càng nhiều sát thủ thì càng nhiều sát thương.</p>
+			</div>
+			<div class="class-buff" v-if="classPassive[1]>=3">
+				<span class="class-title-buff">Kiếm khách - Baldemaster <span v-if="classPassive[1]>=3 && classPassive[1]<6">(3)</span><span v-if="classPassive[1]>=6">(6)</span></span>
+				<p>Nhiều Kiếm Khách trong đội hình sẽ cho họ tỉ lệ tấn công liên tiếp hai đòn, càng nhiều Kiếm Khách thì tỉ lệ càng tăng cao.</p>
+			</div>
+			<div class="class-buff" v-if="classPassive[2]>=2">
+				<span class="class-title-buff">Đấu sĩ - Brawler <span v-if="classPassive[2]>=2 && classPassive[2]<4">(2)</span><span v-if="classPassive[2]>=4">(4)</span></span>
+				<p>Nhiều Đấu Sĩ trong đội hình sẽ cho họ thêm máu cơ bản, càng nhiều Đấu Sĩ thì số máu cộng thêm càng tăng.</p>
+			</div>
+			<div class="class-buff" v-if="classPassive[3]>=2">
+				<span class="class-title-buff">Nguyên tố - Elementalist <span v-if="classPassive[3]>=2 && classPassive[3]<4">(2)</span><span v-if="classPassive[3]>=4">(4)</span></span>
+				<p>Khi có đủ số Nguyên Tố trong đội hình, triệu hồi một Golem để cùng chiến đấu ở đầu trận chiến.</p>
+			</div>
+			<div class="class-buff" v-if="classPassive[4]>=2">
+				<span class="class-title-buff">Hộ vệ - Guardian <span>(2)</span></span>
+				<p>Hai Hộ Vệ trong đội hình sẽ tăng giáp cho chính họ và những đồng mình đứng xung quanh họ khi trận chiến bắt đầu.</p>
+			</div>
+			<div class="class-buff" v-if="classPassive[5]>=2">
+				<span class="class-title-buff">Xạ thủ - Gunslinger <span v-if="classPassive[5]>=2 && classPassive[5]<4">(2)</span><span v-if="classPassive[5]>=4">(4)</span><span v-if="classPassive[5]>=6">(6)</span></span>
+				<p>Nhiều Xạ Thủ trong đội hình giúp đòn đánh của họ có cơ hội bắn trúng một mục tiêu khác, tăng lên khi có nhiều Xạ Thủ trong đội hình.</p>
+			</div>
+			<div class="class-buff" v-if="classPassive[6]>=2">
+				<span class="class-title-buff">Hiệp sĩ - Knight <span v-if="classPassive[6]>=2 && classPassive[6]<4">(2)</span><span v-if="classPassive[6]>=4 && classPassive[6]<6">(4)</span><span v-if="classPassive[6]>=6">(6)</span></span>
+				<p>Nhiều Hiệp Sĩ trong đội hình cho phép họ chặn đứng sát thương từ đòn đánh của đối thủ, chặn nhiều hơn khi có nhiều Hiệp Sĩ hơn.</p>
+			</div>
+			<div class="class-buff" v-if="classPassive[7]>=2">
+				<span class="class-title-buff">Cung thủ - Ranger <span v-if="classPassive[7]>=2 && classPassive[7]<4">(2)</span><span v-if="classPassive[7]>=4">(4)</span></span>
+				<p>Nhiều Cung Thủ trong đội hình cho họ cơ hội tăng thêm tốc độ đánh, tăng lên khi có càng nhiều Cung Thủ hơn.</p>
+			</div>
+			<div class="class-buff" v-if="classPassive[8]>=3">
+				<span class="class-title-buff">Hóa hình - Shapeshifter <span>(3)</span></span>
+				<p>Khi có đủ số Hóa Hình trong đội hình, họ sẽ nhận thêm máu khi biến hình.</p>
+			</div>
+			<div class="class-buff" v-if="classPassive[9]>=3">
+				<span class="class-title-buff">Pháp sư - Sorcerer <span v-if="classPassive[9]>=3 && classPassive[9]<6">(3)</span><span v-if="classPassive[9]>=6">(6)</span></span>
+				<p>Nhiều Pháp Sư trong đội hình sẽ tăng sức mạnh phép thuật cho cả đội, tăng thêm khi có càng nhiều Pháp Sư.</p>
+			</div>
 		  </div>
       </div>
       <div id="wiki" class="col-md-8">
         <h2 class="text-center">Tướng</h2>
         <table class="table">
 			  <tr>
-				<td rowspan="2" colspan="2">Đấu trường chân lý</td>
+				<td rowspan="2" colspan="2">
+					<!-- <img src="data/img/logo-hero.png" width="30%"> -->
+				</td>
 				<td colspan="10">Hệ</td>
 			  </tr>
 			  <tr>	
-				<td>Sát thủ</td>
-				<td>kiếm khách</td>
-				<td>đấu sĩ</td>
-				<td>nguyên tố</td>
-				<td>hộ vệ</td>
-				<td>xạ thủ</td>
-				<td>hiệp sĩ</td>
-				<td>cung thủ</td>
-				<td>hóa hình</td>
-				<td>pháp sư</td>
+				<td>Sát thủ<img src="data/img/class_icon/assassin.png"></td>
+				<td>k.khách<img src="data/img/class_icon/blademaster.png"></td>
+				<td>đấu sĩ<img src="data/img/class_icon/brawler.png"></td>
+				<td>n.tố<img src="data/img/class_icon/elementalist.png"></td>
+				<td>hộ vệ<img src="data/img/class_icon/guardian.png"></td>
+				<td>x.thủ<img src="data/img/class_icon/gunslinger.png"></td>
+				<td>hiệp sĩ<img src="data/img/class_icon/knight.png"></td>
+				<td>cung thủ<img src="data/img/class_icon/ranger.png"></td>
+				<td>hóa hình<img src="data/img/class_icon/shapeshifter.png"></td>
+				<td>pháp sư<img src="data/img/class_icon/sorcerer.png"></td>
 			  </tr>
 			  <tr>
 				<td rowspan="13">Tộc</td>
-				<td>Ác quỷ</td>
-				<td>3</td>
-				<td>4</td>
-				<td>5</td>
-				<td>6</td>
-				<td>7</td>
-				<td>8</td>
-				<td>9</td>
-				<td>10</td>
-				<td>11</td>
-				<td>12</td>
+				<td><img src="data/img/specific_icon/demon.png" width="45">Ác quỷ</td>
+				<td><img v-on:click="addData(1,0,0)" src="data/img/champion/avatar/evelyn.png" class="avt-t2"></td>
+				<td><img v-on:click="addData(0,1,0)" src="data/img/champion/avatar/aatrox.png" class="avt-t3"></td>
+				<td></td>
+				<td><img v-on:click="addData(2,3,0)" src="data/img/champion/avatar/brand.png" class="avt-t4"></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td><img v-on:click="addData(3,7,0)" src="data/img/champion/avatar/varus.png" class="avt-t2"></td>
+				<td>
+					<img v-on:click="addData(4,8,0)" src="data/img/champion/avatar/elise.png" class="avt-t2">
+					<img v-on:click="addData(5,8,[0,5])" src="data/img/champion/avatar/swain.png" class="avt-t5">
+				</td>
+				<td><img v-on:click="addData(6,9,0)" src="data/img/champion/avatar/morgana.png" class="avt-t3"></td>
 			  </tr>
 			  <tr>
-				<td>rồng</td>
-				<td>3</td>			  
-				<td>4</td>
-				<td>5</td>
-				<td>6</td>
-				<td>7</td>
-				<td>8</td>
-				<td>9</td>
-				<td>10</td>
-				<td>11</td>
-				<td>12</td>
+				<td><img src="data/img/specific_icon/dragon.png" width="45">rồng</td>
+				<td></td>			  
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td><img v-on:click="addData(7,8,1)" src="data/img/champion/avatar/shyvana.png" class="avt-t3"></td>
+				<td><img v-on:click="addData(8,9,1)" src="data/img/champion/avatar/aurelionsol.png" class="avt-t4"></td>
 			  </tr>
 			  <tr>
-				<td>độc hành</td>
-				<td>3</td>			  
-				<td>4</td>
-				<td>5</td>
-				<td>6</td>
-				<td>7</td>
-				<td>8</td>
-				<td>9</td>
-				<td>10</td>
-				<td>11</td>
-				<td>12</td>
+				<td><img src="data/img/specific_icon/exile.png" width="45">độc hành</td>
+				<td></td>			  
+				<td><img v-on:click="addData(9,1,2)" src="data/img/champion/avatar/yasuo.png" class="avt-t5"></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
 			  </tr>
 			  <tr>
-				<td>băng quốc</td>
-				<td>3</td>			  
-				<td>4</td>
-				<td>5</td>
-				<td>6</td>
-				<td>7</td>
-				<td>8</td>
-				<td>9</td>
-				<td>10</td>
-				<td>11</td>
-				<td>12</td>
+				<td><img src="data/img/specific_icon/glacial.png" width="45">băng quốc</td>
+				<td></td>			  
+				<td></td>
+				<td><img v-on:click="addData(10,2,3)" src="data/img/champion/avatar/volibear.png" class="avt-t3"></td>
+				<td>
+					<img v-on:click="addData(11,3,3)" src="data/img/champion/avatar/lissandra.png" class="avt-t2">
+					<img v-on:click="addData(12,3,3)" src="data/img/champion/avatar/anivia.png" class="avt-t5">
+				</td>
+				<td><img v-on:click="addData(13,4,3)" src="data/img/champion/avatar/braum.png" class="avt-t2"></td>
+				<td></td>
+				<td><img v-on:click="addData(14,6,3)" src="data/img/champion/avatar/sejuani.png" class="avt-t4"></td>
+				<td><img v-on:click="addData(15,7,3)" src="data/img/champion/avatar/ashe.png" class="avt-t3"></td>
+				<td></td>
+				<td></td>
 			  </tr>
 			  <tr>
-				<td>người máy</td>
-				<td>3</td>			  
-				<td>4</td>
-				<td>5</td>
-				<td>6</td>
-				<td>7</td>
-				<td>8</td>
-				<td>9</td>
-				<td>10</td>
-				<td>11</td>
-				<td>12</td>
+				<td><img src="data/img/specific_icon/robot.png" width="45">người máy</td>
+				<td></td>			  
+				<td></td>
+				<td><img v-on:click="addData(16,3,4)" src="data/img/champion/avatar/blitzcrank.png" class="avt-t2"></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
 			  </tr>
 			  <tr>
-				<td>đế chế</td>
-				<td>3</td>			  
-				<td>4</td>
-				<td>5</td>
-				<td>6</td>
-				<td>7</td>
-				<td>8</td>
-				<td>9</td>
-				<td>10</td>
-				<td>11</td>
-				<td>12</td>
+				<td><img src="data/img/specific_icon/imperial.png" width="45">đế chế</td>
+				<td><img v-on:click="addData(17,0,5)" src="data/img/champion/avatar/katarina.png" class="avt-t3"></td>			  
+				<td><img v-on:click="addData(18,1,5)" src="data/img/champion/avatar/draven.png" class="avt-t4"></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td><img v-on:click="addData(19,6,5)" src="data/img/champion/avatar/draius.png" class="avt-t1"></td>
+				<td></td>
+				<td><img v-on:click="addData(5,8,[0,5])" src="data/img/champion/avatar/swain.png" class="avt-t5"></td>
+				<td></td>
 			  </tr>
 			  <tr>
-				<td>quý tộc</td>
-				<td>3</td>			  
-				<td>4</td>
-				<td>5</td>
-				<td>6</td>
-				<td>7</td>
-				<td>8</td>
-				<td>9</td>
-				<td>10</td>
-				<td>11</td>
-				<td>12</td>
+				<td><img src="data/img/specific_icon/noble.png" width="45">quý tộc</td>
+				<td></td>			  
+				<td><img v-on:click="addData(20,1,6)" src="data/img/champion/avatar/fiora.png" class="avt-t1"></td>
+				<td></td>
+				<td></td>
+				<td><img v-on:click="addData(21,4,6)" src="data/img/champion/avatar/leona.png" class="avt-t4"></td>
+				<td><img v-on:click="addData(22,5,6)" src="data/img/champion/avatar/lucian.png" class="avt-t2"></td>
+				<td>
+					<img v-on:click="addData(23,6,6)" src="data/img/champion/avatar/garen.png" class="avt-t1">
+					<img v-on:click="addData(24,6,6)" src="data/img/champion/avatar/kayle.png" class="avt-t5">
+				</td>
+				<td><img v-on:click="addData(25,7,6)" src="data/img/champion/avatar/vayne.png" class="avt-t1"></td>
+				<td></td>
+				<td></td>
 			  </tr>
 			  <tr>
-				<td>nhẫn giả</td>
-				<td>3</td>			  
-				<td>4</td>
-				<td>5</td>
-				<td>6</td>
-				<td>7</td>
-				<td>8</td>
-				<td>9</td>
-				<td>10</td>
-				<td>11</td>
-				<td>12</td>
+				<td><img src="data/img/specific_icon/ninja.png" width="45">nhẫn giả</td>
+				<td>
+					<img v-on:click="addData(26,0,7)" src="data/img/champion/avatar/akali.png" class="avt-t4">
+					<img v-on:click="addData(27,0,7)" src="data/img/champion/avatar/zed.png" class="avt-t2">
+				</td>			  
+				<td><img v-on:click="addData(28,1,7)" src="data/img/champion/avatar/shen.png" class="avt-t2"></td>
+				<td></td>
+				<td><img v-on:click="addData(29,3,[7,12])" src="data/img/champion/avatar/kennen.png" class="avt-t3"></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
 			  </tr>
 			  <tr>
-				<td>hải tặc</td>
-				<td>3</td>			  
-				<td>4</td>
-				<td>5</td>
-				<td>6</td>
-				<td>7</td>
-				<td>8</td>
-				<td>9</td>
-				<td>10</td>
-				<td>11</td>
-				<td>12</td>
+				<td><img src="data/img/specific_icon/pirate.png" width="45">hải tặc</td>
+				<td><img v-on:click="addData(30,0,8)" src="data/img/champion/avatar/pyke.png" class="avt-t2"></td>			  
+				<td><img v-on:click="addData(31,[1,5],8)" src="data/img/champion/avatar/gangplank.png" class="avt-t3"></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>
+					<img v-on:click="addData(32,5,8)" src="data/img/champion/avatar/missfortune.png" class="avt-t5">
+					<img v-on:click="addData(33,5,8)" src="data/img/champion/avatar/graves.png" class="avt-t1">
+					<img v-on:click="addData(31,[1,5],8)" src="data/img/champion/avatar/gangplank.png" class="avt-t3">
+				</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
 			  </tr>
 			  <tr>
-				<td>ma</td>
-				<td>3</td>			  
-				<td>4</td>
-				<td>5</td>
-				<td>6</td>
-				<td>7</td>
-				<td>8</td>
-				<td>9</td>
-				<td>10</td>
-				<td>11</td>
-				<td>12</td>
+				<td><img src="data/img/specific_icon/phantom.png" width="45">ma</td>
+				<td></td>			  
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td><img v-on:click="addData(34,6,9)" src="data/img/champion/avatar/mordekaiser.png" class="avt-t1"></td>
+				<td><img v-on:click="addData(35,7,9)" src="data/img/champion/avatar/kindred.png" class="avt-t4"></td>
+				<td></td>
+				<td><img v-on:click="addData(36,9,9)" src="data/img/champion/avatar/karthus.png" class="avt-t5"></td>
 			  </tr>
 			  <tr>
-				<td>hoang dã</td>
-				<td>3</td>			  
-				<td>4</td>
-				<td>5</td>
-				<td>6</td>
-				<td>7</td>
-				<td>8</td>
-				<td>9</td>
-				<td>10</td>
-				<td>11</td>
-				<td>12</td>
+				<td><img src="data/img/specific_icon/wild.png" width="45">hoang dã</td>
+				<td><img v-on:click="addData(37,0,10)" src="data/img/champion/avatar/rengar.png" class="avt-t3"></td>			  
+				<td></td>
+				<td><img v-on:click="addData(38,2,10)" src="data/img/champion/avatar/warwick.png" class="avt-t1"></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>
+					<img v-on:click="addData(39,8,10)" src="data/img/champion/avatar/nidalee.png" class="avt-t1">
+					<img v-on:click="addData(40,8,[10,12])" src="data/img/champion/avatar/gnar.png" class="avt-t4">
+				</td>
+				<td><img v-on:click="addData(41,9,10)" src="data/img/champion/avatar/ahri.png" class="avt-t2"></td>
 			  </tr>
 			  <tr>
-				<td>hư không</td>
-				<td>3</td>			  
-				<td>4</td>
-				<td>5</td>
-				<td>6</td>
-				<td>7</td>
-				<td>8</td>
-				<td>9</td>
-				<td>10</td>
-				<td>11</td>
-				<td>12</td>
+				<td><img src="data/img/specific_icon/void.png" width="45">hư không</td>
+				<td><img v-on:click="addData(42,0,11)" src="data/img/champion/avatar/khazix.png" class="avt-t1"></td>			  
+				<td></td>
+				<td>
+					<img v-on:click="addData(43,2,11)" src="data/img/champion/avatar/reksai.png" class="avt-t2">
+					<img v-on:click="addData(44,2,11)" src="data/img/champion/avatar/chogath.png" class="avt-t4">
+				</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td><img v-on:click="addData(45,9,11)" src="data/img/champion/avatar/kassadin.png" class="avt-t1"></td>
 			  </tr>
 			  <tr>
-				<td>yordle</td>
-				<td>3</td>			  
-				<td>4</td>
-				<td>5</td>
-				<td>6</td>
-				<td>7</td>
-				<td>8</td>
-				<td>9</td>
-				<td>10</td>
-				<td>11</td>
-				<td>12</td>
+				<td><img src="data/img/specific_icon/yordle.png" width="45">yordle</td>
+				<td></td>			  
+				<td></td>
+				<td></td>
+				<td><img v-on:click="addData(29,3,[7,12])" src="data/img/champion/avatar/kennen.png" class="avt-t3"></td>
+				<td></td>
+				<td><img v-on:click="addData(46,5,12)" src="data/img/champion/avatar/tristana.png" class="avt-t1"></td>
+				<td><img v-on:click="addData(47,6,12)" src="data/img/champion/avatar/poppy.png" class="avt-t3"></td>
+				<td></td>
+				<td><img v-on:click="addData(40,8,[10,12])" src="data/img/champion/avatar/gnar.png" class="avt-t4"></td>
+				<td>
+					<img v-on:click="addData(48,9,12)" src="data/img/champion/avatar/lulu.png" class="avt-t2">
+					<img v-on:click="addData(49,9,12)" src="data/img/champion/avatar/veigar.png" class="avt-t2">
+				</td>
 			  </tr>
 		</table>
       </div>
     </div>
   </div>
 </div>
+<footer>
+	Made by hieutuko - created by vuejs
+</footer>
 <script>
+	var data1 = data_hero;
+	// console.log(data1);
     var app = new Vue({
     el: '#app',
     data: {
-      todos: [
-        { text: 'Learn JavaScript' },
-        { text: 'Learn Vue' },
-        { text: 'Build something awesome' },
-        { text: 'Learn JavaScript' },
-        { text: 'Learn Vue' },
-        { text: 'Build something awesome' },
-        { text: 'Learn JavaScript' },
-        { text: 'Learn Vue' },
-        { text: 'Build something awesome' }
-      ]
-    }
+      heroes: [
+		{ 
+			heroId: -1,
+			tier: 0,
+			avartar: "", 
+		},
+		{ 
+			heroId: -1,
+			tier: 0,
+			avartar: "", 
+		},
+		{ 
+			heroId: -1,
+			tier: 0,
+			avartar: "", 
+		},
+		{ 
+			heroId: -1,
+			tier: 0,
+			avartar: "", 
+		},
+		{ 
+			heroId: -1,
+			tier: 0,
+			avartar: "", 
+		},
+		{ 
+			heroId: -1,
+			tier: 0,
+			avartar: "", 
+		},
+		{ 
+			heroId: -1,
+			tier: 0,
+			avartar: "", 
+		},
+		{ 
+			heroId: -1,
+			tier: 0,
+			avartar: "", 
+		},
+		{ 
+			heroId: -1,
+			tier: 0,
+			avartar: "", 
+		}
+	  ],
+	  classPassive: [0,0,0,0,0,0,0,0,0,0
+		//   {assassin:0},
+		//   {blademaster:0},
+		//   {brawler:0},
+		//   {elementalist:0},
+		//   {guardian:0},
+		//   {gunslinger:0},
+		//   {knight:0},
+		//   {ranger:0},
+		//   {shapeshifter:0},
+		//   {sorcerer:0}
+	  ],
+	  specific: [0,0,0,0,0,0,0,0,0,0,0,0,0
+		//   {demon:0},
+		//   {dragon:0},
+		//   {exile:0},
+		//   {glacial:0},
+		//   {robot:0},
+		//   {imperial:0},
+		//   {noble:0},
+		//   {ninja:0},
+		//   {pirate:0},
+		//   {phantom:0},
+		//   {wild:0},
+		//   {void:0},
+		//   {yordle:0}
+	  ]
+	},
+	methods: {
+		addData: function (index,i_class,i_specific) {
+			var newSynergy = [];
+			var newHero = { 
+					heroId: index,
+					tier: data1[index].tier,
+					avartar: data1[index].avatar ,
+					cId: data1[index].cId,
+					sId: data1[index].sId,
+				}
+			for(var i=0;i<this.heroes.length;i++){
+				if(this.heroes[i].heroId!=-1){
+					newSynergy.push(this.heroes[i]);
+				}
+			}
+			let obj = newSynergy.find(o => o.heroId === index);
+			if(newSynergy.length<9 && obj === undefined){
+				newSynergy.push(newHero);
+				if(Array.isArray(i_class)){
+					// console.log('multi specific');
+					for(var i=0;i<i_class.length;i++){
+					this.classPassive[i_class[i]] = this.classPassive[i_class[i]]+1;
+					}
+				}
+				else{
+					this.classPassive[i_class] = this.classPassive[i_class]+1;
+				}
+				// console.log(this.class);
+				if(Array.isArray(i_specific)){
+					// console.log('multi specific');
+					for(var i=0;i<i_specific.length;i++){
+					this.specific[i_specific[i]] = this.specific[i_specific[i]]+1;
+					}
+				}
+				else{
+					this.specific[i_specific] = this.specific[i_specific]+1;
+				}
+				console.log(this.specific);
+			}
+			this.updateData(newSynergy);
+		},
+		removeData: function(index,i_class,i_specific){
+			var arr = this.heroes;
+			var removeSynergy = arr.splice(index,1);
+			// this.class[i_class] = this.class[i_class]-1;
+			if(Array.isArray(i_class)){
+				// console.log('multi class');
+				for(var i=0;i<i_class.length;i++){
+				this.classPassive[i_class[i]] = this.classPassive[i_class[i]]-1;
+				}
+			}
+			else{
+				this.classPassive[i_class] = this.classPassive[i_class]-1;
+			}
+			// console.log(this.class);
+			if(Array.isArray(i_specific)){
+				// console.log('multi specific');
+				for(var i=0;i<i_specific.length;i++){
+					console.log(i_specific[i]);
+				this.specific[i_specific[i]] = this.specific[i_specific[i]]-1;
+				}
+			}
+			else{
+				this.specific[i_specific] = this.specific[i_specific]-1;
+			}
+			console.log(this.specific);
+			this.updateData(arr);
+		},
+		updateData: function(array){
+			let nullHero = {
+				heroId: -1,
+				tier: 0,
+				avartar: "",
+			}
+			let loopNumber = 9 - array.length;
+			for(var i=0;i<loopNumber;i++){
+				array.push(nullHero);
+			}
+			this.heroes = array;
+		}
+  	}
   })
 </script>
 
