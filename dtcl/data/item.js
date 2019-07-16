@@ -24,7 +24,7 @@ var data_item = [
 		stat: '+200 máu',
 		description: 'Tăng 200 máu',
 		img : 'data/img/item/base_items/b3.png',
-		citem: [15,25,29,30,38,39,42,43]
+		citem: [14,25,29,30,38,39,42,43]
 	},
 	{
 		id: 4,
@@ -33,7 +33,7 @@ var data_item = [
 		stat: '+20% sát thương kỹ năng',
 		description: 'Tăng 20% sát thương kỹ năng',
 		img : 'data/img/item/base_items/b4.png',
-		citem: [14,18,21,23,24,25,27,41]
+		citem: [17,18,21,23,24,25,27,41]
 	},
 	{
 		id: 5,
@@ -124,7 +124,7 @@ var data_item = [
 		name: 'Búa băng',
 		type: 'combinedItem',
 		description: 'Người sử dụng cũng là một băng tộc',
-		bitem: [3,6],
+		bitem: [2,6],
 		img : 'data/img/item/combined_items/c7.png',
 	},
 	{
