@@ -188,6 +188,7 @@
 			height: 40px;
 			font-size: large;
 		}
+
 		.buff-info {
 			margin-top: 20px;
 			border-top: 1px solid crimson;
@@ -491,76 +492,85 @@
 								<p class="buff-inactive">(3) 25% tỉ lệ trượt</p>
 								<p class="buff-inactive">(6) 60% tỉ lệtrượt</p>
 							</div>
-						</div>
-						<!-- buff class nonactive -->
-						<div class="class-buff" v-if="classPassive[0]<3 && classPassive[0]>0">
-							<span class="class-title-buff">Sát thủ - Assassin <span>({{classPassive[0]}})</span>
-							</span>
-							<p>Sát thủ có thêm sát thương chí mạng</p>
-							<p class="buff-inactive">(3) +150% sát thương chí mạng</p>
-							<p class="buff-inactive">(6) +350% sátthương chí mạng</p>
-						</div>
-						<div class="class-buff" v-if="classPassive[1]>0 && classPassive[1]<3">
-							<span class="class-title-buff">Kiếm khách - Baldemaster
-								<span>({{classPassive[1]}})</span></span>
-							<p>Kiếm khách có 45% tỉ lệ đánh thêm lần nữa</p>
-							<p class="buff-inactive">(3) thêm 1 lần đánh</p>
-							<p class="buff-inactive">(6) thêm 2 lần đánh</p>
-						</div>
-						<div class="class-buff" v-if="classPassive[2]==1">
-							<span class="class-title-buff">Đấu sĩ - Brawler <span>({{classPassive[2]}})</span></span>
-							<p>Đấu sĩ có thêm máu tối đa</p>
-							<p class="buff-inactive">(2) 300 máu</p>
-							<p class="buff-inactive">(4) 700 máu</p>
-						</div>
-						<div class="class-buff" v-if="classPassive[3]>0 && classPassive[3]<3">
-							<span class="class-title-buff">Nguyên tố -
-								Elementalist<span>({{classPassive[3]}})</span></span>
-							<p>Nhận gấp đôi năng lượng từ đòn đánh</p>
-							<p class="buff-inactive">(3) lúc bắt đầu giao chiến triệu hồi 1 người đá</p>
-						</div>
-						<div class="class-buff" v-if="classPassive[4]==1">
-							<span class="class-title-buff">Hộ vệ - Guardian <span>({{classPassive[4]}})</span></span>
-							<p class="buff-inactive">Hai Hộ Vệ trong đội hình sẽ tăng giáp cho chính họ và những đồng
-								mình đứng xung quanh họ
-								khi trận chiến bắt đầu.</p>
-						</div>
-						<div class="class-buff" v-if="classPassive[5]==1">
-							<span class="class-title-buff">Xạ thủ - Gunslinger <span>({{classPassive[5]}})</span></span>
-							<p>Sau khi tấn công xạ thủ 50% tỉ lệ đánh thêm</p>
-							<p class="buff-inactive">(2) bắn 1 kẻ địch ngẫu nhiên</p>
-							<p class="buff-inactive">(4) bắn tất cả kẻ địch trong tầm</p>
-						</div>
-						<div class="class-buff" v-if="classPassive[6]==1">
-							<span class="class-title-buff">Hiệp sĩ - Knight <span>({{classPassive[6]}})</span></span>
-							<p>Chặn sát thương từ đòn đánh</p>
-							<p class="buff-inactive">(2) 20 sát thương chặn được</p>
-							<p class="buff-inactive">(4) 40 sát thương chặn được</p>
-							<p class="buff-inactive">(6) 80 sát thương chặn được</p>
-						</div>
-						<div class="class-buff" v-if="classPassive[7]==1">
-							<span class="class-title-buff">Cung thủ - Ranger <span>({{classPassive[7]}})</span>
-							</span>
-							<p>Cung thủ có tỉ lệ nhân đôi tốc độ đánh trong mỗi 3 giây, trong 3 giây kế tiếp</p>
-							<p class="buff-inactive">(2) 25% tỉ lệ nhân đôi tốc độ đánh</p>
-							<p class="buff-inactive">(4) 65% tỉ lệ nhân đôi tốc độ đánh</p>
-						</div>
-						<div class="class-buff" v-if="classPassive[8]<3 && classPassive[8]>0">
-							<span class="class-title-buff">Hóa hình -
-								Shapeshifter<span>({{classPassive[8]}})</span></span>
-							<p>Hóa hình được cộng máu khi biến đổi</p>
-							<p class="buff-inactive">(3) 100% máu tối đa</p>
-						</div>
-						<div class="class-buff" v-if="classPassive[9]<3 && classPassive[9]>0">
-							<span class="class-title-buff">Pháp sư - Sorcerer <span>({{classPassive[9]}})</span></span>
-							<p>Pháp sư được tăng gấp đôi năng lượng từ đòn đánh, đồng minh được tăng sát thương kỹ năng
-							</p>
-							<p class="buff-inactive">(3) 35% sát thương kỹ năng</p>
-							<p class="buff-inactive">(6) 100% sát thương kỹ năng</p>
+							<!-- buff class nonactive -->
+							<div class="class-buff" v-if="classPassive[0]<3 && classPassive[0]>0">
+								<span class="class-title-buff">Sát thủ - Assassin <span>({{classPassive[0]}})</span>
+								</span>
+								<p>Sát thủ có thêm sát thương chí mạng</p>
+								<p class="buff-inactive">(3) +150% sát thương chí mạng</p>
+								<p class="buff-inactive">(6) +350% sátthương chí mạng</p>
+							</div>
+							<div class="class-buff" v-if="classPassive[1]>0 && classPassive[1]<3">
+								<span class="class-title-buff">Kiếm khách - Baldemaster
+									<span>({{classPassive[1]}})</span></span>
+								<p>Kiếm khách có 45% tỉ lệ đánh thêm lần nữa</p>
+								<p class="buff-inactive">(3) thêm 1 lần đánh</p>
+								<p class="buff-inactive">(6) thêm 2 lần đánh</p>
+							</div>
+							<div class="class-buff" v-if="classPassive[2]==1">
+								<span class="class-title-buff">Đấu sĩ - Brawler
+									<span>({{classPassive[2]}})</span></span>
+								<p>Đấu sĩ có thêm máu tối đa</p>
+								<p class="buff-inactive">(2) 300 máu</p>
+								<p class="buff-inactive">(4) 700 máu</p>
+							</div>
+							<div class="class-buff" v-if="classPassive[3]>0 && classPassive[3]<3">
+								<span class="class-title-buff">Nguyên tố -
+									Elementalist<span>({{classPassive[3]}})</span></span>
+								<p>Nhận gấp đôi năng lượng từ đòn đánh</p>
+								<p class="buff-inactive">(3) lúc bắt đầu giao chiến triệu hồi 1 người đá</p>
+							</div>
+							<div class="class-buff" v-if="classPassive[4]==1">
+								<span class="class-title-buff">Hộ vệ - Guardian
+									<span>({{classPassive[4]}})</span></span>
+								<p class="buff-inactive">Hai Hộ Vệ trong đội hình sẽ tăng giáp cho chính họ và những
+									đồng
+									mình đứng xung quanh họ
+									khi trận chiến bắt đầu.</p>
+							</div>
+							<div class="class-buff" v-if="classPassive[5]==1">
+								<span class="class-title-buff">Xạ thủ - Gunslinger
+									<span>({{classPassive[5]}})</span></span>
+								<p>Sau khi tấn công xạ thủ 50% tỉ lệ đánh thêm</p>
+								<p class="buff-inactive">(2) bắn 1 kẻ địch ngẫu nhiên</p>
+								<p class="buff-inactive">(4) bắn tất cả kẻ địch trong tầm</p>
+							</div>
+							<div class="class-buff" v-if="classPassive[6]==1">
+								<span class="class-title-buff">Hiệp sĩ - Knight
+									<span>({{classPassive[6]}})</span></span>
+								<p>Chặn sát thương từ đòn đánh</p>
+								<p class="buff-inactive">(2) 20 sát thương chặn được</p>
+								<p class="buff-inactive">(4) 40 sát thương chặn được</p>
+								<p class="buff-inactive">(6) 80 sát thương chặn được</p>
+							</div>
+							<div class="class-buff" v-if="classPassive[7]==1">
+								<span class="class-title-buff">Cung thủ - Ranger <span>({{classPassive[7]}})</span>
+								</span>
+								<p>Cung thủ có tỉ lệ nhân đôi tốc độ đánh trong mỗi 3 giây, trong 3 giây kế tiếp</p>
+								<p class="buff-inactive">(2) 25% tỉ lệ nhân đôi tốc độ đánh</p>
+								<p class="buff-inactive">(4) 65% tỉ lệ nhân đôi tốc độ đánh</p>
+							</div>
+							<div class="class-buff" v-if="classPassive[8]<3 && classPassive[8]>0">
+								<span class="class-title-buff">Hóa hình -
+									Shapeshifter<span>({{classPassive[8]}})</span></span>
+								<p>Hóa hình được cộng máu khi biến đổi</p>
+								<p class="buff-inactive">(3) 100% máu tối đa</p>
+							</div>
+							<div class="class-buff" v-if="classPassive[9]<3 && classPassive[9]>0">
+								<span class="class-title-buff">Pháp sư - Sorcerer
+									<span>({{classPassive[9]}})</span></span>
+								<p>Pháp sư được tăng gấp đôi năng lượng từ đòn đánh, đồng minh được tăng sát thương kỹ
+									năng
+								</p>
+								<p class="buff-inactive">(3) 35% sát thương kỹ năng</p>
+								<p class="buff-inactive">(6) 100% sát thương kỹ năng</p>
+							</div>
 						</div>
 						<p class="text-center">
-							<button class="button-show-buff" v-on:click="showBuffNonactive()" v-if="!displayBuffNonactive">Hiện buff chưa kích hoạt</button>
-							<button class="button-show-buff" v-on:click="showBuffNonactive()" v-if="displayBuffNonactive">Ẩn buff chưa kích hoạt</button>
+							<button class="button-show-buff" v-on:click="showBuffNonactive()"
+								v-if="!displayBuffNonactive">Hiện buff chưa kích hoạt</button>
+							<button class="button-show-buff" v-on:click="showBuffNonactive()"
+								v-if="displayBuffNonactive">Ẩn buff chưa kích hoạt</button>
 						</p>
 					</div>
 				</div>
