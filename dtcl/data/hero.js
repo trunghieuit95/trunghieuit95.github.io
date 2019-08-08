@@ -1,5 +1,6 @@
 var data_hero = [
         {
+			'id': 0,
 			'name' : 'Aatrox',
 			'tier' : '3',
 			'skill-name' : 'Quỷ Kiếm Darkin',
@@ -12,6 +13,7 @@ var data_hero = [
 			'sId' : 0
 		},
 		{
+			'id': 1,
 			'name' : 'Evelyn',
 			'tier' : '2',
 			'skill-name' : 'Quỷ Kiếm Darkin',
@@ -24,6 +26,7 @@ var data_hero = [
 			'sId' : 0
 		},
 		{
+			'id': 2,
 			'name' : 'Brand',
 			'tier' : '4',
 			'skill-name' : 'Quỷ Kiếm Darkin',
@@ -36,6 +39,7 @@ var data_hero = [
 			'sId' : 0
 		},
 		{
+			'id': 3,
 			'name' : 'Varus',
 			'tier' : '2',
 			'skill-name' : 'Quỷ Kiếm Darkin',
@@ -48,6 +52,7 @@ var data_hero = [
 			'sId' : 0
 		},
 		{
+			'id': 4,
 			'name' : 'Elise',
 			'tier' : '1',
 			'skill-name' : 'Quỷ Kiếm Darkin',
@@ -60,6 +65,7 @@ var data_hero = [
 			'sId' : 0
 		},
 		{
+			'id': 5,
 			'name' : 'Swain',
 			'tier' : '5',
 			'skill-name' : 'Quỷ Kiếm Darkin',
@@ -72,6 +78,7 @@ var data_hero = [
 			'sId' : [0,5]
 		},
 		{
+			'id': 6,
 			'name' : 'Morgana',
 			'tier' : '3',
 			'skill-name' : 'Quỷ Kiếm Darkin',
@@ -84,6 +91,7 @@ var data_hero = [
 			'sId' : 0
 		},
 		{
+			'id': 7,
 			'name' : 'Shyvana',
 			'tier' : '3',
 			'skill-name' : 'Quỷ Kiếm Darkin',
@@ -96,6 +104,7 @@ var data_hero = [
 			'sId' : 1
 		},
 		{
+			'id': 8,
 			'name' : 'Aurelion Sol',
 			'tier' : '4',
 			'skill-name' : 'Quỷ Kiếm Darkin',
@@ -108,6 +117,7 @@ var data_hero = [
 			'sId' : 1
 		},
 		{
+			'id': 9,
 			'name' : 'Yasuo',
 			'tier' : '5',
 			'skill-name' : 'Quỷ Kiếm Darkin',
@@ -120,6 +130,7 @@ var data_hero = [
 			'sId' : 2
 		},
 		{
+			'id': 10,
 			'name' : 'Volibear',
 			'tier' : '3',
 			'avatar' : 'data/img/champion/avatar/volibear.png',
@@ -127,6 +138,7 @@ var data_hero = [
 			'sId' : 3
 		},
 		{
+			'id': 11,
 			'name' : 'Lissandra',
 			'tier' : '2',
 			'avatar' : 'data/img/champion/avatar/lissandra.png',
@@ -134,6 +146,7 @@ var data_hero = [
 			'sId' : 3
 		},
 		{
+			'id': 12,
 			'name' : 'Anivia',
 			'tier' : '5',
 			'avatar' : 'data/img/champion/avatar/anivia.png',
@@ -141,6 +154,7 @@ var data_hero = [
 			'sId' : 3
 		},
 		{
+			'id': 13,
 			'name' : 'Braum',
 			'tier' : '2',
 			'avatar' : 'data/img/champion/avatar/braum.png',
@@ -148,6 +162,7 @@ var data_hero = [
 			'sId' : 3
 		},
 		{
+			'id': 14,
 			'name' : 'Sejuani',
 			'tier' : '4',
 			'avatar' : 'data/img/champion/avatar/sejuani.png',
@@ -155,6 +170,7 @@ var data_hero = [
 			'sId' : 3
 		},
 		{
+			'id': 15,
 			'name' : 'Ashe',
 			'tier' : '3',
 			'avatar' : 'data/img/champion/avatar/ashe.png',
@@ -162,6 +178,7 @@ var data_hero = [
 			'sId' : 3
 		},
 		{
+			'id': 16,
 			'name' : 'Blitcrank',
 			'tier' : '2',
 			'avatar' : 'data/img/champion/avatar/blitzcrank.png',
@@ -169,6 +186,7 @@ var data_hero = [
 			'sId' : 4
 		},
 		{
+			'id': 17,
 			'name' : 'Katarina',
 			'tier' : '3',
 			'avatar' : 'data/img/champion/avatar/katarina.png',
@@ -176,6 +194,7 @@ var data_hero = [
 			'sId' : 5
 		},
 		{
+			'id': 18,
 			'name' : 'Draven',
 			'tier' : '4',
 			'avatar' : 'data/img/champion/avatar/draven.png',
@@ -183,6 +202,7 @@ var data_hero = [
 			'sId' : 5
 		},
 		{
+			'id': 19,
 			'name' : 'Darius',
 			'tier' : '1',
 			'avatar' : 'data/img/champion/avatar/draius.png',
@@ -190,6 +210,7 @@ var data_hero = [
 			'sId' : 5
 		},
 		{
+			'id': 20,
 			'name' : 'Fiora',
 			'tier' : '1',
 			'avatar' : 'data/img/champion/avatar/fiora.png',
@@ -197,6 +218,7 @@ var data_hero = [
 			'sId' : 6
 		},
 		{
+			'id': 21,
 			'name' : 'leona',
 			'tier' : '4',
 			'avatar' : 'data/img/champion/avatar/leona.png',
@@ -204,6 +226,7 @@ var data_hero = [
 			'sId' : 6
 		},
 		{
+			'id': 22,
 			'name' : 'Lucian',
 			'tier' : '2',
 			'avatar' : 'data/img/champion/avatar/lucian.png',
@@ -211,6 +234,7 @@ var data_hero = [
 			'sId' : 6
 		},
 		{
+			'id': 23,
 			'name' : 'Garen',
 			'tier' : '1',
 			'avatar' : 'data/img/champion/avatar/garen.png',
@@ -218,6 +242,7 @@ var data_hero = [
 			'sId' : 6
 		},
 		{
+			'id': 24,
 			'name' : 'Kayle',
 			'tier' : '5',
 			'avatar' : 'data/img/champion/avatar/kayle.png',
@@ -225,6 +250,7 @@ var data_hero = [
 			'sId' : 6
 		},
 		{
+			'id': 25,
 			'name' : 'Vayne',
 			'tier' : '1',
 			'avatar' : 'data/img/champion/avatar/vayne.png',
@@ -232,6 +258,7 @@ var data_hero = [
 			'sId' : 6
 		},
 		{
+			'id': 26,
 			'name' : 'Akali',
 			'tier' : '4',
 			'avatar' : 'data/img/champion/avatar/akali.png',
@@ -239,6 +266,7 @@ var data_hero = [
 			'sId' : 7
 		},
 		{
+			'id': 27,
 			'name' : 'Zed',
 			'tier' : '2',
 			'avatar' : 'data/img/champion/avatar/zed.png',
@@ -246,6 +274,7 @@ var data_hero = [
 			'sId' : 7
 		},
 		{
+			'id': 28,
 			'name' : 'Shen',
 			'tier' : '2',
 			'avatar' : 'data/img/champion/avatar/shen.png',
@@ -253,6 +282,7 @@ var data_hero = [
 			'sId' : 7
 		},
 		{
+			'id': 29,
 			'name' : 'kennen',
 			'tier' : '3',
 			'avatar' : 'data/img/champion/avatar/kennen.png',
@@ -260,6 +290,7 @@ var data_hero = [
 			'sId' : [7,12]
 		},
 		{
+			'id': 30,
 			'name' : 'Pyke',
 			'tier' : '2',
 			'avatar' : 'data/img/champion/avatar/pyke.png',
@@ -267,6 +298,7 @@ var data_hero = [
 			'sId' : 8
 		},
 		{
+			'id': 31,
 			'name' : 'Gangplank',
 			'tier' : '3',
 			'avatar' : 'data/img/champion/avatar/gangplank.png',
@@ -274,6 +306,7 @@ var data_hero = [
 			'sId' : 8
 		},
 		{
+			'id': 32,
 			'name' : 'Miss Fortune',
 			'tier' : '5',
 			'avatar' : 'data/img/champion/avatar/missfortune.png',
@@ -281,6 +314,7 @@ var data_hero = [
 			'sId' : 8
 		},
 		{
+			'id': 33,
 			'name' : 'Graves',
 			'tier' : '1',
 			'avatar' : 'data/img/champion/avatar/graves.png',
@@ -288,6 +322,7 @@ var data_hero = [
 			'sId' : 8
 		},
 		{
+			'id': 34,
 			'name' : 'Mordekaiser',
 			'tier' : '1',
 			'avatar' : 'data/img/champion/avatar/mordekaiser.png',
@@ -295,6 +330,7 @@ var data_hero = [
 			'sId' : 9
 		},
 		{
+			'id': 35,
 			'name' : 'Kindred',
 			'tier' : '4',
 			'avatar' : 'data/img/champion/avatar/kindred.png',
@@ -302,6 +338,7 @@ var data_hero = [
 			'sId' : 9
 		},
 		{
+			'id': 36,
 			'name' : 'kathus',
 			'tier' : '5',
 			'avatar' : 'data/img/champion/avatar/karthus.png',
@@ -309,6 +346,7 @@ var data_hero = [
 			'sId' : 9
 		},
 		{
+			'id': 37,
 			'name' : 'Rengar',
 			'tier' : '3',
 			'avatar' : 'data/img/champion/avatar/rengar.png',
@@ -316,6 +354,7 @@ var data_hero = [
 			'sId' : 10
 		},
 		{
+			'id': 38,
 			'name' : 'Wawick',
 			'tier' : '1',
 			'avatar' : 'data/img/champion/avatar/warwick.png',
@@ -323,6 +362,7 @@ var data_hero = [
 			'sId' : 10
 		},
 		{
+			'id': 39,
 			'name' : 'Nidalee',
 			'tier' : '1',
 			'avatar' : 'data/img/champion/avatar/nidalee.png',
@@ -330,6 +370,7 @@ var data_hero = [
 			'sId' : 10
 		},
 		{
+			'id': 40,
 			'name' : 'Gnar',
 			'tier' : '4',
 			'avatar' : 'data/img/champion/avatar/gnar.png',
@@ -337,6 +378,7 @@ var data_hero = [
 			'sId' : [10,12]
 		},
 		{
+			'id': 41,
 			'name' : 'Ahri',
 			'tier' : '2',
 			'avatar' : 'data/img/champion/avatar/ahri.png',
@@ -344,6 +386,7 @@ var data_hero = [
 			'sId' : 10
 		},
 		{
+			'id': 42,
 			'name' : 'KhaZix',
 			'tier' : '1',
 			'avatar' : 'data/img/champion/avatar/khazix.png',
@@ -351,6 +394,7 @@ var data_hero = [
 			'sId' : 11
 		},
 		{
+			'id': 43,
 			'name' : 'Reksai',
 			'tier' : '2',
 			'avatar' : 'data/img/champion/avatar/reksai.png',
@@ -358,6 +402,7 @@ var data_hero = [
 			'sId' : 11
 		},
 		{
+			'id': 44,
 			'name' : 'Chogath',
 			'tier' : '4',
 			'avatar' : 'data/img/champion/avatar/chogath.png',
@@ -365,6 +410,7 @@ var data_hero = [
 			'sId' : 11
 		},
 		{
+			'id': 45,
 			'name' : 'Kassadin',
 			'tier' : '1',
 			'avatar' : 'data/img/champion/avatar/kassadin.png',
@@ -372,6 +418,7 @@ var data_hero = [
 			'sId' : 11
 		},
 		{
+			'id': 46,
 			'name' : 'Tristana',
 			'tier' : '1',
 			'avatar' : 'data/img/champion/avatar/tristana.png',
@@ -379,6 +426,7 @@ var data_hero = [
 			'sId' : 12
 		},
 		{
+			'id': 47,
 			'name' : 'Poppy',
 			'tier' : '3',
 			'avatar' : 'data/img/champion/avatar/poppy.png',
@@ -386,6 +434,7 @@ var data_hero = [
 			'sId' : 12
 		},
 		{
+			'id': 48,
 			'name' : 'Lulu',
 			'tier' : '2',
 			'avatar' : 'data/img/champion/avatar/lulu.png',
@@ -393,6 +442,7 @@ var data_hero = [
 			'sId' : 12
 		},
 		{
+			'id': 49,
 			'name' : 'Veirgar',
 			'tier' : '2',
 			'avatar' : 'data/img/champion/avatar/veigar.png',
@@ -400,6 +450,7 @@ var data_hero = [
 			'sId' : 12
 		},
 		{
+			'id': 50,
 			'name' : 'Twisted Fate',
 			'tier' : '2',
 			'avatar' : 'data/img/champion/avatar/TwistedFate.png',

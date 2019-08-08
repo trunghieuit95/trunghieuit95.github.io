@@ -291,15 +291,17 @@
 													<h3 class="text-center">Sức mạnh đội hình</h3>
 													<!-- specific -->
 													<div class="row">
-														<div class="col-md-3 text-center" v-if="specific[0]>=2">
-															<img src="data/img/specific_icon/demon.png"><br/>
+														<div class="col-md-3 text-center">
+															<img src="data/img/specific_icon/demon.png" v-bind:class="{'active-filter':specific[0]>=2, 'inactive-filter':specific[0]<2}"><br/>
 															<span>({{specific[0]}})</span><br/>
+															<p v-bind:class="{'active-filter':specific[0]>=2, 'inactive-filter':specific[0]<2}">
 															<i v-if="specific[0]>=2" class="fas fa-square"></i>
 															<i v-if="specific[0]<2" class="far fa-square"></i>
 															<i v-if="specific[0]>=4" class="fas fa-square"></i>
 															<i v-if="specific[0]<4"class="far fa-square"></i>
 															<i v-if="specific[0]>=6" class="fas fa-square"></i>
 															<i v-if="specific[0]<6" class="far fa-square"></i>
+															</p>
 														</div>
 														<div class="col-md-3 text-center">
 																<img src="data/img/class_icon/assassin.png"><br/>
