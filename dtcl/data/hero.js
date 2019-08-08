@@ -1,6 +1,6 @@
 var data_hero = [
         {
-			'name' : 'aatrox',
+			'name' : 'Aatrox',
 			'tier' : '3',
 			'skill-name' : 'Quỷ Kiếm Darkin',
 			'skill-avatar' : '',
@@ -12,7 +12,7 @@ var data_hero = [
 			'sId' : 0
 		},
 		{
-			'name' : 'evelyn',
+			'name' : 'Evelyn',
 			'tier' : '2',
 			'skill-name' : 'Quỷ Kiếm Darkin',
 			'skill-avatar' : '',
@@ -24,7 +24,7 @@ var data_hero = [
 			'sId' : 0
 		},
 		{
-			'name' : 'brand',
+			'name' : 'Brand',
 			'tier' : '4',
 			'skill-name' : 'Quỷ Kiếm Darkin',
 			'skill-avatar' : '',
@@ -36,7 +36,7 @@ var data_hero = [
 			'sId' : 0
 		},
 		{
-			'name' : 'varus',
+			'name' : 'Varus',
 			'tier' : '2',
 			'skill-name' : 'Quỷ Kiếm Darkin',
 			'skill-avatar' : '',
@@ -48,8 +48,8 @@ var data_hero = [
 			'sId' : 0
 		},
 		{
-			'name' : 'elise',
-			'tier' : '2',
+			'name' : 'Elise',
+			'tier' : '1',
 			'skill-name' : 'Quỷ Kiếm Darkin',
 			'skill-avatar' : '',
 			'skill-detail' : 'Aatrox tung kiếm và tấn công vào khu vực trước mặt, gây sát thương lên tất cả kẻ địch trong vùng ảnh hưởng.',
@@ -60,7 +60,7 @@ var data_hero = [
 			'sId' : 0
 		},
 		{
-			'name' : 'swain',
+			'name' : 'Swain',
 			'tier' : '5',
 			'skill-name' : 'Quỷ Kiếm Darkin',
 			'skill-avatar' : '',
@@ -72,7 +72,7 @@ var data_hero = [
 			'sId' : [0,5]
 		},
 		{
-			'name' : 'morgana',
+			'name' : 'Morgana',
 			'tier' : '3',
 			'skill-name' : 'Quỷ Kiếm Darkin',
 			'skill-avatar' : '',
@@ -84,7 +84,7 @@ var data_hero = [
 			'sId' : 0
 		},
 		{
-			'name' : 'shyvana',
+			'name' : 'Shyvana',
 			'tier' : '3',
 			'skill-name' : 'Quỷ Kiếm Darkin',
 			'skill-avatar' : '',
@@ -398,5 +398,12 @@ var data_hero = [
 			'avatar' : 'data/img/champion/avatar/veigar.png',
 			'cId' : 9,
 			'sId' : 12
+		},
+		{
+			'name' : 'Twisted Fate',
+			'tier' : '2',
+			'avatar' : 'data/img/champion/avatar/TwistedFate.png',
+			'cId' : 9,
+			'sId' : 8
 		},
     ]

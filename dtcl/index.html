@@ -30,6 +30,7 @@
 		crossorigin="anonymous"></script>
 	<script src="https://unpkg.com/vue"></script>
 	<script src="https://unpkg.com/vue-router@2.0.0/dist/vue-router.js"></script>
+	<script src="https://kit.fontawesome.com/9ac9a2d78d.js"></script>
 	<script src="data/test.js"></script>
 	<script src="data/hero.js"></script>
 	<script src="data/item.js"></script>
@@ -49,7 +50,7 @@
 		}
 
 		svg {
-			width: 30%;
+			width: 15%;
 		}
 
 		.hex {
@@ -183,8 +184,8 @@
 			width: 100%;
 			background: #000000;
 			border: none;
-			border-bottom: 1px solid crimson;
-			border-radius: 0px 0px 30px 30px;
+			/* border-bottom: 1px solid crimson;
+			border-radius: 0px 0px 30px 30px; */
 			height: 40px;
 			font-size: large;
 		}
@@ -192,664 +193,574 @@
 		.buff-info {
 			margin-top: 20px;
 			border-top: 1px solid crimson;
+			border-bottom: 1px solid crimson;
 			border-radius: 30px;
+		}
+		.pool-champion img{
+			margin: 2px;
+		}
+		.active-filter{
+			opacity: 1;
+		}
+		.inactive-filter{
+			opacity: 0.5;
 		}
 	</style>
 </head>
 
 <body>
-	<p class="text-center"><img src="data/img/logo-hero-vn.png" width="30%"></p>
+	<p class="text-center">
+		<img src="data/img/logo-hero-vn.png" width="30%"><br />
+		<img src="data/img/logo-end-cap.png" width="30%" />
+	</p>
+	<p class="text-center">Phiên bản hiện tại 9.14 - udapte ngày 19/07/2019</p>
 	<!-- <h1>Đấu trường chân lý</h1> -->
 
 	<div id="app">
 		<div class="container">
 			<div class="row">
-				<div id="my-synergy" class="col-md-4">
-					<h2 class="text-center">Đội hình của bạn</h2>
-					<!-- <div v-for="hero in heroes"> -->
-					<svg v-for="(hero, index) in heroes" viewbox="0 0 100 100" version="1.1"
-						xmlns="http://www.w3.org/2000/svg" v-on:click="removeData(index,hero.cId,hero.sId)">
-						<defs v-if="hero.heroId!=-1">
-							<pattern v-bind:id="'img'+index" patternUnits="userSpaceOnUse" width="100" height="100">
-								<image v-bind:xlink:href="hero.avartar" x="0" width="100" height="100" />
-							</pattern>
-						</defs>
-						<!-- <polygon class="hex" points="50 1 95 25 95 75 50 99 5 75 5 25" fill="url(#img)"/> -->
-						<polygon v-if="hero.heroId!=-1" v-bind:class="[hero.tier ? 0 : hex , 'hex-t'+hero.tier]"
-							points="50 1 95 25 95 75 50 99 5 75 5 25" v-bind:fill="'url(#img'+index+')'" />
-						<polygon v-if="hero.heroId==-1" class="hex" points="50 1 95 25 95 75 50 99 5 75 5 25"
-							fill="#333" />
-						<text v-if="hero.tier!=0 && hero.heroId!=-1" class="text-price" font-size="15" x="50" y="90"
-							text-anchor="middle">${{hero.tier}}</text>
-					</svg>
-					<!-- </div> -->
-					<div class="buff-info">
-						<h3 class="text-center">Sức mạnh đội hình</h3>
-						<!-- specific -->
-						<div class="specific-buff" v-if="specific[0]>=2">
-							<span class="specific-title-buff">Ác quỷ - Demon <span>({{specific[0]}})</span>
-								<!-- <span v-if="specific[0]>=2 && specific[0]<4">(2)</span><span v-if="specific[0]>=4 && specific[0]<6">(4)</span><span v-if="specific[0]>=6">(6)</span> -->
-							</span>
-							<p>Đòn đánh có của ác quỷ có tỉ lệ đốt năng lượng và gây sát thương chuẩn tương ứng</p>
-							<p v-bind:class="(specific[0]>=2 && specific[0]<4) ? 'buff-active' : 'buff-inactive'">(2)
-								40% tỉ lệ đốt năng lượng</p>
-							<p v-bind:class="(specific[0]>=4 && specific[0]<6) ? 'buff-active' : 'buff-inactive'">(4)
-								60% tỉ lệ đốt năng lượng</p>
-							<p v-bind:class="(specific[0]>=6) ? 'buff-active' : 'buff-inactive'">(6) 80% tỉ lệ đốt năng
-								lượng</p>
-						</div>
-						<div class="specific-buff" v-if="specific[1]==2">
-							<span class="specific-title-buff">Rồng - Dragon <span>({{specific[1]}})</span></span>
-							<p>Khi hai tướng rồng xuất hiện trong đội hình, chúng sẽ được miễn nhiễm sát thương phép.
-							</p>
-						</div>
-						<div class="specific-buff" v-if="specific[2]==1">
-							<span class="specific-title-buff">Độc hành - Exile
-								<span><span>({{specific[2]}})</span></span></span>
-							<p>Các Độc Hành bắt đầu trận đấu với một lá chắn bằng 100% máu tối đa nếu như không có bất
-								kì vị tướng nào kề cận họ khi trận chiến bắt đầu.</p>
-						</div>
-						<div class="specific-buff" v-if="specific[3]>=2">
-							<span class="specific-title-buff">Băng quốc - Gracial <span>({{specific[3]}})</span>
-								<!-- <span v-if="specific[3]>=2 && specific[3]<4">(2)</span><span v-if="specific[3]>=4 && specific[3]<6">(4)</span><span v-if="specific[3]>=6">(6)</span> -->
-							</span>
-							<p>Đòn đánh của băng quốc có tỉ lệ làm choáng 2 giấy</p>
-							<p v-bind:class="(specific[3]>=2 && specific[3]<4) ? 'buff-active' : 'buff-inactive'">(2)
-								20% tỉ lệ choáng</p>
-							<p v-bind:class="(specific[3]>=4 && specific[3]<6) ? 'buff-active' : 'buff-inactive'">(4)
-								30% tỉ lệ choáng</p>
-							<p v-bind:class="(specific[3]>=6) ? 'buff-active' : 'buff-inactive'">(6) 45% tỉ lệ choáng
-							</p>
-						</div>
-						<div class="specific-buff" v-if="specific[4]==1">
-							<span class="specific-title-buff">Người máy - Robot <span>({{specific[4]}})</span></span>
-							<p>Người Máy sẽ bắt đầu trận chiến với đầy bình năng lượng.</p>
-						</div>
-						<div class="specific-buff" v-if="specific[5]>=2">
-							<span class="specific-title-buff">Đế chế - Imperial <span>({{specific[5]}})</span>
-								<!-- <span v-if="specific[5]>=2 && specific[5]<4">(2)</span><span v-if="specific[5]==4">(4)</span> -->
-							</span>
-							<p>Gây gấp đôi sát thương</p>
-							<p v-bind:class="(specific[5]>=2 && specific[5]<4) ? 'buff-active' : 'buff-inactive'">(2) 1
-								đế chế ngẫu nhiên</p>
-							<p v-bind:class="(specific[5]>=4) ? 'buff-active' : 'buff-inactive'">(4) Tất cả đế chế</p>
-						</div>
-						<div class="specific-buff" v-if="specific[6]>=3">
-							<span class="specific-title-buff">Quý tộc - Noble <span>({{specific[6]}})</span>
-								<!-- <span v-if="specific[6]>=3 && specific[6]<6">(3)</span><span v-if="specific[6]==6">(6)</span> -->
-							</span>
-							<p>cộng 100 giáp và hồi 35 máu mỗi đòn đánh</p>
-							<p v-bind:class="(specific[6]>=3 && specific[6]<6) ? 'buff-active' : 'buff-inactive'">(3) 1
-								đồng minh ngẫu nhiên</p>
-							<p v-bind:class="(specific[6]>=6) ? 'buff-active' : 'buff-inactive'">(6) Tất cả đồng minh
-							</p>
-						</div>
-						<div class="specific-buff" v-if="specific[7]==1 || specific[7]==4">
-							<span class="specific-title-buff">Nhẫn giả - Ninja <span>({{specific[7]}})</span>
-								<!-- <span v-if="specific[7]==1">(1)</span><span v-if="specific[7]==4">(4)</span> -->
-							</span>
-							<p v-bind:class="(specific[7]==1) ? 'buff-active' : 'buff-inactive'">(1) Cộng 40% sát thương
-								đòn đánh</p>
-							<p v-bind:class="(specific[7]==4) ? 'buff-active' : 'buff-inactive'">(4) Tất cả nhẫn giả
-								Cộng 80% sát thương đòn đánh</p>
-						</div>
-						<div class="specific-buff" v-if="specific[8]>=3">
-							<span class="specific-title-buff">Hải tặc - Pirate <span>({{specific[8]}})</span></span>
-							<p>Kiếm thêm tối đa 4 vàng khi giao chiến với người chơi khác</p>
-						</div>
-						<div class="specific-buff" v-if="specific[9]>=2">
-							<span class="specific-title-buff">Ma - Phantom <span>({{specific[9]}})</span></span>
-							<p>Ngẫu nhiên nguyền rủa 1 kẻ địch khiến máu kẻ đó còn 100</p>
-						</div>
-						<div class="specific-buff" v-if="specific[10]>=2">
-							<span class="specific-title-buff">Hoang dã - Wild <span>({{specific[10]}})</span>
-								<!-- <span v-if="specific[10]>=2 && specific[10]<4">(2)</span><span v-if="specific[10]>=4">(4)</span> -->
-							</span>
-							<p>Đòn đánh tích nộ (tối đa 5 nộ), mỗi nộ cho 7 tốc đánh</p>
-							<p v-bind:class="(specific[10]>=2 && specific[10]<4) ? 'buff-active' : 'buff-inactive'">(2)
-								Chỉ đồng minh Hoang dã</p>
-							<p v-bind:class="(specific[10]>=4) ? 'buff-active' : 'buff-inactive'">(4) Toàn bộ đồng minh
-							</p>
-						</div>
-						<div class="specific-buff" v-if="specific[11]>=3">
-							<span class="specific-title-buff">Hư không - Void <span>({{specific[11]}})</span></span>
-							<p>Tất cả đòn đánh bỏ qua 50% giáp của kẻ địch</p>
-						</div>
-						<div class="specific-buff" v-if="specific[12]>=3">
-							<span class="specific-title-buff">Yordle <span>({{specific[12]}})</span>
-								<!-- <span v-if="specific[12]>=3 && specific[12]<6">(3)</span><span v-if="specific[12]>=6">(6)</span> -->
-							</span>
-							<p>Đòn đánh lên Yordle có tỉ lệ trượt</p>
-							<p v-bind:class="(specific[12]>=3 && specific[12]<6) ? 'buff-active' : 'buff-inactive'">(3)
-								25% tỉ lệ trượt</p>
-							<p v-bind:class="(specific[12]>=6) ? 'buff-active' : 'buff-inactive'">(6) 60% tỉ lệ trượt
-							</p>
-						</div>
-						<!-- class -->
-						<div class="class-buff" v-if="classPassive[0]>=3">
-							<span class="class-title-buff">Sát thủ - Assassin <span>({{classPassive[0]}})</span>
-								<!-- <span v-if="classPassive[0]>=3 && classPassive[0]<6">(3)</span><span v-if="classPassive[0]>=6">(6)</span> -->
-							</span>
-							<p>Sát thủ có thêm sát thương chí mạng</p>
-							<p
-								v-bind:class="(classPassive[0]>=3 && classPassive[0]<6) ? 'buff-active' : 'buff-inactive'">
-								(3) +150% sát thương chí mạng</p>
-							<p v-bind:class="(classPassive[0]>=6) ? 'buff-active' : 'buff-inactive'">(6) +350% sát
-								thương chí mạng</p>
-						</div>
-						<div class="class-buff" v-if="classPassive[1]>=3">
-							<span class="class-title-buff">Kiếm khách - Baldemaster <span>({{classPassive[1]}})</span>
-								<!-- <span v-if="classPassive[1]>=3 && classPassive[1]<6">(3)</span><span v-if="classPassive[1]>=6">(6)</span> -->
-							</span>
-							<p>Kiếm khách có 45% tỉ lệ đánh thêm lần nữa</p>
-							<p
-								v-bind:class="(classPassive[1]>=3 && classPassive[1]<6) ? 'buff-active' : 'buff-inactive'">
-								(3) thêm 1 lần đánh</p>
-							<p v-bind:class="(classPassive[1]>=6) ? 'buff-active' : 'buff-inactive'">(6) thêm 2 lần đánh
-							</p>
-						</div>
-						<div class="class-buff" v-if="classPassive[2]>=2">
-							<span class="class-title-buff">Đấu sĩ - Brawler <span>({{classPassive[2]}})</span>
-								<!-- <span v-if="classPassive[2]>=2 && classPassive[2]<4">(2)</span><span v-if="classPassive[2]>=4">(4)</span> -->
-							</span>
-							<p>Đấu sĩ có thêm máu tối đa</p>
-							<p
-								v-bind:class="(classPassive[2]>=2 && classPassive[2]<4) ? 'buff-active' : 'buff-inactive'">
-								(2) 300 máu</p>
-							<p v-bind:class="(classPassive[2]>=4) ? 'buff-active' : 'buff-inactive'">(4) 700 máu</p>
-						</div>
-						<div class="class-buff" v-if="classPassive[3]>=3">
-							<span class="class-title-buff">Nguyên tố - Elementalist
-								<span>({{classPassive[3]}})</span></span>
-							<p>Nhận gấp đôi năng lượng từ đòn đánh</p>
-							<p>(3) lúc bắt đầu giao chiến triệu hồi 1 người đá</p>
-						</div>
-						<div class="class-buff" v-if="classPassive[4]>=2">
-							<span class="class-title-buff">Hộ vệ - Guardian <span>({{classPassive[4]}})</span></span>
-							<p>Hai Hộ Vệ trong đội hình sẽ tăng giáp cho chính họ và những đồng mình đứng xung quanh họ
-								khi trận chiến bắt đầu.</p>
-						</div>
-						<div class="class-buff" v-if="classPassive[5]>=2">
-							<span class="class-title-buff">Xạ thủ - Gunslinger <span>({{classPassive[5]}})</span>
-								<!-- <span v-if="classPassive[5]>=2 && classPassive[5]<4">(2)</span><span v-if="classPassive[5]>=4">(4)</span><span v-if="classPassive[5]>=6">(6)</span> -->
-							</span>
-							<p>Sau khi tấn công xạ thủ 50% tỉ lệ đánh thêm</p>
-							<p
-								v-bind:class="(classPassive[5]>=2 && classPassive[5]<4) ? 'buff-active' : 'buff-inactive'">
-								(2) bắn 1 kẻ địch ngẫu nhiên</p>
-							<p v-bind:class="(classPassive[5]>=4) ? 'buff-active' : 'buff-inactive'">(4) bắn tất cả kẻ
-								địch trong tầm</p>
-						</div>
-						<div class="class-buff" v-if="classPassive[6]>=2">
-							<span class="class-title-buff">Hiệp sĩ - Knight <span>({{classPassive[6]}})</span>
-								<!-- <span v-if="classPassive[6]>=2 && classPassive[6]<4">(2)</span><span v-if="classPassive[6]>=4 && classPassive[6]<6">(4)</span><span v-if="classPassive[6]>=6">(6)</span> -->
-							</span>
-							<p>Chặn sát thương từ đòn đánh</p>
-							<p
-								v-bind:class="(classPassive[6]>=2 && classPassive[6]<4) ? 'buff-active' : 'buff-inactive'">
-								(2) 20 sát thương chặn được</p>
-							<p
-								v-bind:class="(classPassive[6]>=4 && classPassive[6]<6) ? 'buff-active' : 'buff-inactive'">
-								(4) 40 sát thương chặn được</p>
-							<p v-bind:class="(classPassive[6]>=6) ? 'buff-active' : 'buff-inactive'">(6) 80 sát thương
-								chặn được</p>
-						</div>
-						<div class="class-buff" v-if="classPassive[7]>=2">
-							<span class="class-title-buff">Cung thủ - Ranger <span>({{classPassive[7]}})</span>
-								<!-- <span v-if="classPassive[7]>=2 && classPassive[7]<4">(2)</span><span v-if="classPassive[7]>=4">(4)</span> -->
-							</span>
-							<p>Cung thủ có tỉ lệ nhân đôi tốc độ đánh trong mỗi 3 giây, trong 3 giây kế tiếp</p>
-							<p
-								v-bind:class="(classPassive[7]>=2 && classPassive[7]<4) ? 'buff-active' : 'buff-inactive'">
-								(2) 25% tỉ lệ nhân đôi tốc độ đánh</p>
-							<p v-bind:class="(classPassive[7]>=4) ? 'buff-active' : 'buff-inactive'">(4) 65% tỉ lệ nhân
-								đôi tốc độ đánh</p>
-						</div>
-						<div class="class-buff" v-if="classPassive[8]>=3">
-							<span class="class-title-buff">Hóa hình - Shapeshifter
-								<span>({{classPassive[8]}})</span></span>
-							<p>Hóa hình được cộng máu khi biến đổi</p>
-							<p>(3) 100% máu tối đa</p>
-						</div>
-						<div class="class-buff" v-if="classPassive[9]>=3">
-							<span class="class-title-buff">Pháp sư - Sorcerer <span>({{classPassive[9]}})</span>
-								<!-- <span v-if="classPassive[9]>=3 && classPassive[9]<6">(3)</span><span v-if="classPassive[9]>=6">(6)</span> -->
-							</span>
-							<p>Pháp sư được tăng gấp đôi năng lượng từ đòn đánh, đồng minh được tăng sát thương kỹ năng
-							</p>
-							<p
-								v-bind:class="(classPassive[9]>=3 && classPassive[9]<6) ? 'buff-active' : 'buff-inactive'">
-								(3) 35% sát thương kỹ năng</p>
-							<p v-bind:class="(classPassive[9]>=6) ? 'buff-active' : 'buff-inactive'">(6) 100% sát thương
-								kỹ năng</p>
-						</div>
-						<hr>
-						<div class="buff-nonactive" v-if="displayBuffNonactive">
-							<h4 class="text-center">Buff chưa kích hoạt</h4>
-							<div class="specific-buff" v-if="specific[0]<2 && specific[0]>0">
-								<span class="specific-title-buff">Ác quỷ - Demon <span>({{specific[0]}})</span></span>
-								<p>Đòn đánh có của ác quỷ có tỉ lệ đốt năng lượng và gây sát thương chuẩn tương ứng</p>
-								<p class="buff-inactive">(2) 40% tỉ lệ đốt năng lượng</p>
-								<p class="buff-inactive">(4) 60% tỉ lệ đốt năng lượng</p>
-								<p class="buff-inactive">(6) 80% tỉ lệ đốt năng lượng</p>
-							</div>
-							<div class="specific-buff" v-if="specific[1]==1">
-								<span class="specific-title-buff">Rồng - Dragon <span>({{specific[1]}})</span></span>
-								<p>Khi hai tướng rồng xuất hiện trong đội hình, chúng sẽ được miễn nhiễm sát thương
-									phép.</p>
-							</div>
-							<div class="specific-buff" v-if="specific[3]==1">
-								<span class="specific-title-buff">Băng quốc - Gracial
-									<span>({{specific[3]}})</span></span>
-								<p>Đòn đánh của băng quốc có tỉ lệ làm choáng 2 giấy</p>
-								<p class="buff-inactive">(2) 20% tỉ lệ choáng</p>
-								<p class="buff-inactive">(4) 30% tỉ lệ choáng</p>
-								<p class="buff-inactive">(6) 45% tỉ lệ choáng</p>
-							</div>
-							<div class="specific-buff" v-if="specific[5]==1">
-								<span class="specific-title-buff">Đế chế - Imperial
-									<span>({{specific[5]}})</span></span>
-								<p>Gây gấp đôi sát thương</p>
-								<p class="buff-inactive">(2) 1 đế chế ngẫu nhiên</p>
-								<p class="buff-inactive">(4) Tất cả đế chế</p>
-							</div>
-							<div class="specific-buff" v-if="specific[6]<3 && specific[6]>0">
-								<span class="specific-title-buff">Quý tộc - Noble <span>({{specific[6]}})</span></span>
-								<p>cộng 100 giáp và hồi 35 máu mỗi đòn đánh</p>
-								<p class="buff-inactive">(3) 1 đồng minh ngẫu nhiên</p>
-								<p class="buff-inactive">(6) Tất cả đồng minh</p>
-							</div>
-							<div class="specific-buff" v-if="specific[7]<4 && specific[7]>1">
-								<span class="specific-title-buff">Nhẫn giả - Ninja <span>({{specific[7]}})</span></span>
-								<p class="buff-inactive">(1) Cộng 40% sát
-									thương đòn đánh</p>
-								<p class="buff-inactive">(4) Tất cả nhẫn giả
-									Cộng 80% sát thương đòn đánh</p>
-							</div>
-							<div class="specific-buff" v-if="specific[8]<3 && specific[8]>0">
-								<span class="specific-title-buff">Hải tặc - Pirate <span>({{specific[8]}})</span></span>
-								<p class="buff-inactive">Kiếm thêm tối đa 4 vàng khi giao chiến với người chơi khác</p>
-							</div>
-							<div class="specific-buff" v-if="specific[9]==1">
-								<span class="specific-title-buff">Ma - Phantom <span>({{specific[9]}})</span></span>
-								<p class="buff-inactive">Ngẫu nhiên nguyền rủa 1 kẻ địch khiến máu kẻ đó còn 100</p>
-							</div>
-							<div class="specific-buff" v-if="specific[10]==1">
-								<span class="specific-title-buff">Hoang dã - Wild <span>({{specific[10]}})</span>
-								</span>
-								<p>Đòn đánh tích nộ (tối đa 5 nộ), mỗi nộ cho 7 tốc đánh</p>
-								<p class="buff-inactive">(2) Chỉ đồng minh Hoang dã</p>
-								<p class="buff-inactive">(4) Toàn bộ đồng minh</p>
-							</div>
-							<div class="specific-buff" v-if="specific[11]<3 && specific[11]>0">
-								<span class="specific-title-buff">Hư không - Void <span>({{specific[11]}})</span></span>
-								<p class="buff-inactive">Tất cả đòn đánh bỏ qua 50% giáp của kẻ địch</p>
-							</div>
-							<div class="specific-buff" v-if="specific[12]<3 && specific[12]>0">
-								<span class="specific-title-buff">Yordle <span>({{specific[12]}})</span>
-								</span>
-								<p>Đòn đánh lên Yordle có tỉ lệ trượt</p>
-								<p class="buff-inactive">(3) 25% tỉ lệ trượt</p>
-								<p class="buff-inactive">(6) 60% tỉ lệtrượt</p>
-							</div>
-							<!-- buff class nonactive -->
-							<div class="class-buff" v-if="classPassive[0]<3 && classPassive[0]>0">
-								<span class="class-title-buff">Sát thủ - Assassin <span>({{classPassive[0]}})</span>
-								</span>
-								<p>Sát thủ có thêm sát thương chí mạng</p>
-								<p class="buff-inactive">(3) +150% sát thương chí mạng</p>
-								<p class="buff-inactive">(6) +350% sátthương chí mạng</p>
-							</div>
-							<div class="class-buff" v-if="classPassive[1]>0 && classPassive[1]<3">
-								<span class="class-title-buff">Kiếm khách - Baldemaster
-									<span>({{classPassive[1]}})</span></span>
-								<p>Kiếm khách có 45% tỉ lệ đánh thêm lần nữa</p>
-								<p class="buff-inactive">(3) thêm 1 lần đánh</p>
-								<p class="buff-inactive">(6) thêm 2 lần đánh</p>
-							</div>
-							<div class="class-buff" v-if="classPassive[2]==1">
-								<span class="class-title-buff">Đấu sĩ - Brawler
-									<span>({{classPassive[2]}})</span></span>
-								<p>Đấu sĩ có thêm máu tối đa</p>
-								<p class="buff-inactive">(2) 300 máu</p>
-								<p class="buff-inactive">(4) 700 máu</p>
-							</div>
-							<div class="class-buff" v-if="classPassive[3]>0 && classPassive[3]<3">
-								<span class="class-title-buff">Nguyên tố -
-									Elementalist<span>({{classPassive[3]}})</span></span>
-								<p>Nhận gấp đôi năng lượng từ đòn đánh</p>
-								<p class="buff-inactive">(3) lúc bắt đầu giao chiến triệu hồi 1 người đá</p>
-							</div>
-							<div class="class-buff" v-if="classPassive[4]==1">
-								<span class="class-title-buff">Hộ vệ - Guardian
-									<span>({{classPassive[4]}})</span></span>
-								<p class="buff-inactive">Hai Hộ Vệ trong đội hình sẽ tăng giáp cho chính họ và những
-									đồng
-									mình đứng xung quanh họ
-									khi trận chiến bắt đầu.</p>
-							</div>
-							<div class="class-buff" v-if="classPassive[5]==1">
-								<span class="class-title-buff">Xạ thủ - Gunslinger
-									<span>({{classPassive[5]}})</span></span>
-								<p>Sau khi tấn công xạ thủ 50% tỉ lệ đánh thêm</p>
-								<p class="buff-inactive">(2) bắn 1 kẻ địch ngẫu nhiên</p>
-								<p class="buff-inactive">(4) bắn tất cả kẻ địch trong tầm</p>
-							</div>
-							<div class="class-buff" v-if="classPassive[6]==1">
-								<span class="class-title-buff">Hiệp sĩ - Knight
-									<span>({{classPassive[6]}})</span></span>
-								<p>Chặn sát thương từ đòn đánh</p>
-								<p class="buff-inactive">(2) 20 sát thương chặn được</p>
-								<p class="buff-inactive">(4) 40 sát thương chặn được</p>
-								<p class="buff-inactive">(6) 80 sát thương chặn được</p>
-							</div>
-							<div class="class-buff" v-if="classPassive[7]==1">
-								<span class="class-title-buff">Cung thủ - Ranger <span>({{classPassive[7]}})</span>
-								</span>
-								<p>Cung thủ có tỉ lệ nhân đôi tốc độ đánh trong mỗi 3 giây, trong 3 giây kế tiếp</p>
-								<p class="buff-inactive">(2) 25% tỉ lệ nhân đôi tốc độ đánh</p>
-								<p class="buff-inactive">(4) 65% tỉ lệ nhân đôi tốc độ đánh</p>
-							</div>
-							<div class="class-buff" v-if="classPassive[8]<3 && classPassive[8]>0">
-								<span class="class-title-buff">Hóa hình -
-									Shapeshifter<span>({{classPassive[8]}})</span></span>
-								<p>Hóa hình được cộng máu khi biến đổi</p>
-								<p class="buff-inactive">(3) 100% máu tối đa</p>
-							</div>
-							<div class="class-buff" v-if="classPassive[9]<3 && classPassive[9]>0">
-								<span class="class-title-buff">Pháp sư - Sorcerer
-									<span>({{classPassive[9]}})</span></span>
-								<p>Pháp sư được tăng gấp đôi năng lượng từ đòn đánh, đồng minh được tăng sát thương kỹ
-									năng
-								</p>
-								<p class="buff-inactive">(3) 35% sát thương kỹ năng</p>
-								<p class="buff-inactive">(6) 100% sát thương kỹ năng</p>
-							</div>
-						</div>
-						<p class="text-center">
-							<button class="button-show-buff" v-on:click="showBuffNonactive()"
-								v-if="!displayBuffNonactive">Hiện buff chưa kích hoạt</button>
-							<button class="button-show-buff" v-on:click="showBuffNonactive()"
-								v-if="displayBuffNonactive">Ẩn buff chưa kích hoạt</button>
-						</p>
-					</div>
-				</div>
-				<div id="wiki" class="col-md-8">
+				<div id="wiki" class="col-md-12">
 					<ul class="nav nav-tabs">
 						<li class="active" style="width: 50%"><a data-toggle="tab" href="#champions">Tướng</a></li>
 						<li style="width: 50%"><a data-toggle="tab" href="#items">Trang bị</a></li>
 					</ul>
 					<div class="tab-content">
 						<div id="champions" class="tab-pane fade in active">
-							<table class="table">
-								<tr>
-									<td rowspan="2" colspan="2">
-										<!-- <img src="data/img/logo-hero.png" width="30%"> -->
-									</td>
-									<td colspan="10">Hệ</td>
-								</tr>
-								<tr>
-									<td>Sát thủ<img src="data/img/class_icon/assassin.png"></td>
-									<td>k.khách<img src="data/img/class_icon/blademaster.png"></td>
-									<td>đấu sĩ<img src="data/img/class_icon/brawler.png"></td>
-									<td>n.tố<img src="data/img/class_icon/elementalist.png"></td>
-									<td>hộ vệ<img src="data/img/class_icon/guardian.png"></td>
-									<td>x.thủ<img src="data/img/class_icon/gunslinger.png"></td>
-									<td>hiệp sĩ<img src="data/img/class_icon/knight.png"></td>
-									<td>cung thủ<img src="data/img/class_icon/ranger.png"></td>
-									<td>hóa hình<img src="data/img/class_icon/shapeshifter.png"></td>
-									<td>pháp sư<img src="data/img/class_icon/sorcerer.png"></td>
-								</tr>
-								<tr>
-									<td rowspan="13">Tộc</td>
-									<td><img src="data/img/specific_icon/demon.png" width="45">Ác quỷ</td>
-									<td><img v-on:click="addData(1,0,0)" src="data/img/champion/avatar/evelyn.png"
-											class="avt-t2"></td>
-									<td><img v-on:click="addData(0,1,0)" src="data/img/champion/avatar/aatrox.png"
-											class="avt-t3"></td>
-									<td></td>
-									<td><img v-on:click="addData(2,3,0)" src="data/img/champion/avatar/brand.png"
-											class="avt-t4"></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td><img v-on:click="addData(3,7,0)" src="data/img/champion/avatar/varus.png"
-											class="avt-t2"></td>
-									<td>
-										<img v-on:click="addData(4,8,0)" src="data/img/champion/avatar/elise.png"
-											class="avt-t2">
-										<img v-on:click="addData(5,8,[0,5])" src="data/img/champion/avatar/swain.png"
-											class="avt-t5">
-									</td>
-									<td><img v-on:click="addData(6,9,0)" src="data/img/champion/avatar/morgana.png"
-											class="avt-t3"></td>
-								</tr>
-								<tr>
-									<td><img src="data/img/specific_icon/dragon.png" width="45">rồng</td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td><img v-on:click="addData(7,8,1)" src="data/img/champion/avatar/shyvana.png"
-											class="avt-t3"></td>
-									<td><img v-on:click="addData(8,9,1)" src="data/img/champion/avatar/aurelionsol.png"
-											class="avt-t4"></td>
-								</tr>
-								<tr>
-									<td><img src="data/img/specific_icon/exile.png" width="45">độc hành</td>
-									<td></td>
-									<td><img v-on:click="addData(9,1,2)" src="data/img/champion/avatar/yasuo.png"
-											class="avt-t5"></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td><img src="data/img/specific_icon/glacial.png" width="45">băng quốc</td>
-									<td></td>
-									<td></td>
-									<td><img v-on:click="addData(10,2,3)" src="data/img/champion/avatar/volibear.png"
-											class="avt-t3"></td>
-									<td>
-										<img v-on:click="addData(11,3,3)" src="data/img/champion/avatar/lissandra.png"
-											class="avt-t2">
-										<img v-on:click="addData(12,3,3)" src="data/img/champion/avatar/anivia.png"
-											class="avt-t5">
-									</td>
-									<td><img v-on:click="addData(13,4,3)" src="data/img/champion/avatar/braum.png"
-											class="avt-t2"></td>
-									<td></td>
-									<td><img v-on:click="addData(14,6,3)" src="data/img/champion/avatar/sejuani.png"
-											class="avt-t4"></td>
-									<td><img v-on:click="addData(15,7,3)" src="data/img/champion/avatar/ashe.png"
-											class="avt-t3"></td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td><img src="data/img/specific_icon/robot.png" width="45">người máy</td>
-									<td></td>
-									<td></td>
-									<td><img v-on:click="addData(16,2,4)" src="data/img/champion/avatar/blitzcrank.png"
-											class="avt-t2"></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td><img src="data/img/specific_icon/imperial.png" width="45">đế chế</td>
-									<td><img v-on:click="addData(17,0,5)" src="data/img/champion/avatar/katarina.png"
-											class="avt-t3"></td>
-									<td><img v-on:click="addData(18,1,5)" src="data/img/champion/avatar/draven.png"
-											class="avt-t4"></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td><img v-on:click="addData(19,6,5)" src="data/img/champion/avatar/draius.png"
-											class="avt-t1"></td>
-									<td></td>
-									<td><img v-on:click="addData(5,8,[0,5])" src="data/img/champion/avatar/swain.png"
-											class="avt-t5"></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td><img src="data/img/specific_icon/noble.png" width="45">quý tộc</td>
-									<td></td>
-									<td><img v-on:click="addData(20,1,6)" src="data/img/champion/avatar/fiora.png"
-											class="avt-t1"></td>
-									<td></td>
-									<td></td>
-									<td><img v-on:click="addData(21,4,6)" src="data/img/champion/avatar/leona.png"
-											class="avt-t4"></td>
-									<td><img v-on:click="addData(22,5,6)" src="data/img/champion/avatar/lucian.png"
-											class="avt-t2"></td>
-									<td>
-										<img v-on:click="addData(23,6,6)" src="data/img/champion/avatar/garen.png"
-											class="avt-t1">
-										<img v-on:click="addData(24,6,6)" src="data/img/champion/avatar/kayle.png"
-											class="avt-t5">
-									</td>
-									<td><img v-on:click="addData(25,7,6)" src="data/img/champion/avatar/vayne.png"
-											class="avt-t1"></td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td><img src="data/img/specific_icon/ninja.png" width="45">nhẫn giả</td>
-									<td>
-										<img v-on:click="addData(26,0,7)" src="data/img/champion/avatar/akali.png"
-											class="avt-t4">
-										<img v-on:click="addData(27,0,7)" src="data/img/champion/avatar/zed.png"
-											class="avt-t2">
-									</td>
-									<td><img v-on:click="addData(28,1,7)" src="data/img/champion/avatar/shen.png"
-											class="avt-t2"></td>
-									<td></td>
-									<td><img v-on:click="addData(29,3,[7,12])" src="data/img/champion/avatar/kennen.png"
-											class="avt-t3"></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td><img src="data/img/specific_icon/pirate.png" width="45">hải tặc</td>
-									<td><img v-on:click="addData(30,0,8)" src="data/img/champion/avatar/pyke.png"
-											class="avt-t2"></td>
-									<td><img v-on:click="addData(31,[1,5],8)"
-											src="data/img/champion/avatar/gangplank.png" class="avt-t3"></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td>
-										<img v-on:click="addData(32,5,8)" src="data/img/champion/avatar/missfortune.png"
-											class="avt-t5">
-										<img v-on:click="addData(33,5,8)" src="data/img/champion/avatar/graves.png"
-											class="avt-t1">
-										<img v-on:click="addData(31,[1,5],8)"
-											src="data/img/champion/avatar/gangplank.png" class="avt-t3">
-									</td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td><img src="data/img/specific_icon/phantom.png" width="45">ma</td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td><img v-on:click="addData(34,6,9)" src="data/img/champion/avatar/mordekaiser.png"
-											class="avt-t1"></td>
-									<td><img v-on:click="addData(35,7,9)" src="data/img/champion/avatar/kindred.png"
-											class="avt-t4"></td>
-									<td></td>
-									<td><img v-on:click="addData(36,9,9)" src="data/img/champion/avatar/karthus.png"
-											class="avt-t5"></td>
-								</tr>
-								<tr>
-									<td><img src="data/img/specific_icon/wild.png" width="45">hoang dã</td>
-									<td><img v-on:click="addData(37,0,10)" src="data/img/champion/avatar/rengar.png"
-											class="avt-t3"></td>
-									<td></td>
-									<td><img v-on:click="addData(38,2,10)" src="data/img/champion/avatar/warwick.png"
-											class="avt-t1"></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td>
-										<img v-on:click="addData(39,8,10)" src="data/img/champion/avatar/nidalee.png"
-											class="avt-t1">
-										<img v-on:click="addData(40,8,[10,12])" src="data/img/champion/avatar/gnar.png"
-											class="avt-t4">
-									</td>
-									<td><img v-on:click="addData(41,9,10)" src="data/img/champion/avatar/ahri.png"
-											class="avt-t2"></td>
-								</tr>
-								<tr>
-									<td><img src="data/img/specific_icon/void.png" width="45">hư không</td>
-									<td><img v-on:click="addData(42,0,11)" src="data/img/champion/avatar/khazix.png"
-											class="avt-t1"></td>
-									<td></td>
-									<td>
-										<img v-on:click="addData(43,2,11)" src="data/img/champion/avatar/reksai.png"
-											class="avt-t2">
-										<img v-on:click="addData(44,2,11)" src="data/img/champion/avatar/chogath.png"
-											class="avt-t4">
-									</td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td><img v-on:click="addData(45,9,11)" src="data/img/champion/avatar/kassadin.png"
-											class="avt-t1"></td>
-								</tr>
-								<tr>
-									<td><img src="data/img/specific_icon/yordle.png" width="45">yordle</td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td><img v-on:click="addData(29,3,[7,12])" src="data/img/champion/avatar/kennen.png"
-											class="avt-t3"></td>
-									<td></td>
-									<td><img v-on:click="addData(46,5,12)" src="data/img/champion/avatar/tristana.png"
-											class="avt-t1"></td>
-									<td><img v-on:click="addData(47,6,12)" src="data/img/champion/avatar/poppy.png"
-											class="avt-t3"></td>
-									<td></td>
-									<td><img v-on:click="addData(40,8,[10,12])" src="data/img/champion/avatar/gnar.png"
-											class="avt-t4"></td>
-									<td>
-										<img v-on:click="addData(48,9,12)" src="data/img/champion/avatar/lulu.png"
-											class="avt-t2">
-										<img v-on:click="addData(49,9,12)" src="data/img/champion/avatar/veigar.png"
-											class="avt-t2">
-									</td>
-								</tr>
-							</table>
+							<div class="row">
+								<div class="col-md-4">
+									<h1>Danh sách tướng</h1>
+									<div class="filter-class text-center">
+										<h4 class="text-center">Hệ</h4>
+										<img v-on:click="changeFillter('class',0)" v-bind:class="{'active-filter':filterClass==0, 'inactive-filter':filterClass!=0}" src="data/img/class_icon/assassin.png" width="45">
+										<img v-on:click="changeFillter('class',1)" v-bind:class="{'active-filter':filterClass==1, 'inactive-filter':filterClass!=1}" src="data/img/class_icon/blademaster.png" width="45">
+										<img v-on:click="changeFillter('class',2)" v-bind:class="{'active-filter':filterClass==2, 'inactive-filter':filterClass!=2}" src="data/img/class_icon/brawler.png" width="45">
+										<img v-on:click="changeFillter('class',3)" v-bind:class="{'active-filter':filterClass==3, 'inactive-filter':filterClass!=3}" src="data/img/class_icon/elementalist.png" width="45">
+										<img v-on:click="changeFillter('class',4)" v-bind:class="{'active-filter':filterClass==4, 'inactive-filter':filterClass!=4}" src="data/img/class_icon/guardian.png" width="45">
+										<img v-on:click="changeFillter('class',5)" v-bind:class="{'active-filter':filterClass==5, 'inactive-filter':filterClass!=5}" src="data/img/class_icon/gunslinger.png" width="45">
+										<img v-on:click="changeFillter('class',6)" v-bind:class="{'active-filter':filterClass==6, 'inactive-filter':filterClass!=6}" src="data/img/class_icon/knight.png" width="45">
+										<img v-on:click="changeFillter('class',7)" v-bind:class="{'active-filter':filterClass==7, 'inactive-filter':filterClass!=7}" src="data/img/class_icon/ranger.png" width="45">
+										<img v-on:click="changeFillter('class',8)" v-bind:class="{'active-filter':filterClass==8, 'inactive-filter':filterClass!=8}" src="data/img/class_icon/shapeshifter.png" width="45">
+										<img v-on:click="changeFillter('class',9)" v-bind:class="{'active-filter':filterClass==9, 'inactive-filter':filterClass!=9}" src="data/img/class_icon/sorcerer.png" width="45">
+									</div>
+									<div class="filter-origin text-center">
+										<h4 class="text-center">Tộc</h4>
+										<img v-on:click="changeFillter('origin',0)" v-bind:class="{'active-filter':filterOrigin==0, 'inactive-filter':filterOrigin!=0}" src="data/img/specific_icon/demon.png" width="45">
+										<img v-on:click="changeFillter('origin',1)" v-bind:class="{'active-filter':filterOrigin==1, 'inactive-filter':filterOrigin!=1}" src="data/img/specific_icon/dragon.png" width="45">
+										<img v-on:click="changeFillter('origin',2)" v-bind:class="{'active-filter':filterOrigin==2, 'inactive-filter':filterOrigin!=2}" src="data/img/specific_icon/exile.png" width="45">
+										<img v-on:click="changeFillter('origin',3)" v-bind:class="{'active-filter':filterOrigin==3, 'inactive-filter':filterOrigin!=3}" src="data/img/specific_icon/glacial.png" width="45">
+										<img v-on:click="changeFillter('origin',4)" v-bind:class="{'active-filter':filterOrigin==4, 'inactive-filter':filterOrigin!=4}" src="data/img/specific_icon/robot.png" width="45">
+										<img v-on:click="changeFillter('origin',5)" v-bind:class="{'active-filter':filterOrigin==5, 'inactive-filter':filterOrigin!=5}" src="data/img/specific_icon/imperial.png" width="45">
+										<img v-on:click="changeFillter('origin',6)" v-bind:class="{'active-filter':filterOrigin==6, 'inactive-filter':filterOrigin!=6}" src="data/img/specific_icon/noble.png" width="45">
+										<img v-on:click="changeFillter('origin',7)" v-bind:class="{'active-filter':filterOrigin==7, 'inactive-filter':filterOrigin!=7}" src="data/img/specific_icon/ninja.png" width="45">
+										<img v-on:click="changeFillter('origin',8)" v-bind:class="{'active-filter':filterOrigin==8, 'inactive-filter':filterOrigin!=8}" src="data/img/specific_icon/pirate.png" width="45">
+										<img v-on:click="changeFillter('origin',9)" v-bind:class="{'active-filter':filterOrigin==9, 'inactive-filter':filterOrigin!=9}"src="data/img/specific_icon/phantom.png" width="45">
+										<img v-on:click="changeFillter('origin',10)" v-bind:class="{'active-filter':filterOrigin==10, 'inactive-filter':filterOrigin!=10}" src="data/img/specific_icon/wild.png" width="45">
+										<img v-on:click="changeFillter('origin',11)" v-bind:class="{'active-filter':filterOrigin==11, 'inactive-filter':filterOrigin!=11}" src="data/img/specific_icon/void.png" width="45">
+										<img v-on:click="changeFillter('origin',12)" v-bind:class="{'active-filter':filterOrigin==12, 'inactive-filter':filterOrigin!=12}" src="data/img/specific_icon/yordle.png" width="45">
+									</div>
+									<div class="pool-champion">
+										<img v-for="(champion,index) in arrChampionDisplay" v-on:click="addData(index,champion.cId,champion.sId)" v-bind:src="champion.avatar" v-bind:class="'avt-t'+champion.tier" >
+									</div>
+								</div>
+								<div id="my-synergy" class="col-md-8">
+									<h2 class="text-center">Đội hình của bạn</h2>
+									<!-- <div v-for="hero in heroes"> -->
+									<svg v-for="(hero, index) in heroes" viewbox="0 0 100 100" version="1.1"
+										xmlns="http://www.w3.org/2000/svg"
+										v-on:click="removeData(index,hero.cId,hero.sId)">
+										<defs v-if="hero.heroId!=-1">
+											<pattern v-bind:id="'img'+index" patternUnits="userSpaceOnUse" width="100"
+												height="100">
+												<image v-bind:xlink:href="hero.avartar" x="0" width="100"
+													height="100" />
+											</pattern>
+										</defs>
+										<!-- <polygon class="hex" points="50 1 95 25 95 75 50 99 5 75 5 25" fill="url(#img)"/> -->
+										<polygon v-if="hero.heroId!=-1"
+											v-bind:class="[hero.tier ? 0 : hex , 'hex-t'+hero.tier]"
+											points="50 1 95 25 95 75 50 99 5 75 5 25"
+											v-bind:fill="'url(#img'+index+')'" />
+										<polygon v-if="hero.heroId==-1" class="hex"
+											points="50 1 95 25 95 75 50 99 5 75 5 25" fill="#333" />
+										<text v-if="hero.tier!=0 && hero.heroId!=-1" class="text-price" font-size="15"
+											x="50" y="90" text-anchor="middle">${{hero.tier}}</text>
+									</svg>
+									<!-- </div> -->
+									<div class="row">
+											<div class="buff-info col-md-6">
+													<h3 class="text-center">Sức mạnh đội hình</h3>
+													<!-- specific -->
+													<div class="row">
+														<div class="col-md-3 text-center" v-if="specific[0]>=2">
+															<img src="data/img/specific_icon/demon.png"><br/>
+															<span>({{specific[0]}})</span><br/>
+															<i v-if="specific[0]>=2" class="fas fa-square"></i>
+															<i v-if="specific[0]<2" class="far fa-square"></i>
+															<i v-if="specific[0]>=4" class="fas fa-square"></i>
+															<i v-if="specific[0]<4"class="far fa-square"></i>
+															<i v-if="specific[0]>=6" class="fas fa-square"></i>
+															<i v-if="specific[0]<6" class="far fa-square"></i>
+														</div>
+														<div class="col-md-3 text-center">
+																<img src="data/img/class_icon/assassin.png"><br/>
+																<span>(4)</span>
+															</div>
+															<div class="col-md-3 text-center">
+																	<img src="data/img/class_icon/assassin.png"><br/>
+																	<span>(4)</span>
+																</div>
+																<div class="col-md-3 text-center">
+																		<img src="data/img/class_icon/assassin.png"><br/>
+																		<span>(4)</span>
+																	</div>
+													</div>
+													<div class="specific-buff" v-if="specific[0]>=2">
+														<span class="specific-title-buff">Ác quỷ - Demon
+															<span>({{specific[0]}})</span>
+															<!-- <span v-if="specific[0]>=2 && specific[0]<4">(2)</span><span v-if="specific[0]>=4 && specific[0]<6">(4)</span><span v-if="specific[0]>=6">(6)</span> -->
+														</span>
+														<p>Đòn đánh có của ác quỷ có tỉ lệ đốt năng lượng và gây sát thương chuẩn
+															tương
+															ứng</p>
+														<p
+															v-bind:class="(specific[0]>=2 && specific[0]<4) ? 'buff-active' : 'buff-inactive'">
+															(2)
+															25% tỉ lệ đốt năng lượng</p>
+														<p
+															v-bind:class="(specific[0]>=4 && specific[0]<6) ? 'buff-active' : 'buff-inactive'">
+															(4)
+															50% tỉ lệ đốt năng lượng</p>
+														<p v-bind:class="(specific[0]>=6) ? 'buff-active' : 'buff-inactive'">(6) 85%
+															tỉ
+															lệ đốt năng
+															lượng</p>
+													</div>
+													<div class="specific-buff" v-if="specific[1]==2">
+														<span class="specific-title-buff">Rồng - Dragon
+															<span>({{specific[1]}})</span></span>
+														<p>Khi hai tướng rồng xuất hiện trong đội hình, chúng sẽ được miễn nhiễm sát
+															thương phép.
+														</p>
+													</div>
+													<div class="specific-buff" v-if="specific[2]==1">
+														<span class="specific-title-buff">Độc hành - Exile
+															<span><span>({{specific[2]}})</span></span></span>
+														<p>Các Độc Hành bắt đầu trận đấu với một lá chắn bằng 100% máu tối đa nếu
+															như
+															không có bất
+															kì vị tướng nào kề cận họ khi trận chiến bắt đầu.</p>
+													</div>
+													<div class="specific-buff" v-if="specific[3]>=2">
+														<span class="specific-title-buff">Băng quốc - Gracial
+															<span>({{specific[3]}})</span>
+															<!-- <span v-if="specific[3]>=2 && specific[3]<4">(2)</span><span v-if="specific[3]>=4 && specific[3]<6">(4)</span><span v-if="specific[3]>=6">(6)</span> -->
+														</span>
+														<p>Đòn đánh của băng quốc có tỉ lệ làm choáng 2 giấy</p>
+														<p
+															v-bind:class="(specific[3]>=2 && specific[3]<4) ? 'buff-active' : 'buff-inactive'">
+															(2)
+															20% tỉ lệ choáng</p>
+														<p
+															v-bind:class="(specific[3]>=4 && specific[3]<6) ? 'buff-active' : 'buff-inactive'">
+															(4)
+															30% tỉ lệ choáng</p>
+														<p v-bind:class="(specific[3]>=6) ? 'buff-active' : 'buff-inactive'">(6) 45%
+															tỉ
+															lệ choáng
+														</p>
+													</div>
+													<div class="specific-buff" v-if="specific[4]==1">
+														<span class="specific-title-buff">Người máy - Robot
+															<span>({{specific[4]}})</span></span>
+														<p>Người Máy sẽ bắt đầu trận chiến với đầy bình năng lượng.</p>
+													</div>
+													<div class="specific-buff" v-if="specific[5]>=2">
+														<span class="specific-title-buff">Đế chế - Imperial
+															<span>({{specific[5]}})</span>
+															<!-- <span v-if="specific[5]>=2 && specific[5]<4">(2)</span><span v-if="specific[5]==4">(4)</span> -->
+														</span>
+														<p>Gây gấp đôi sát thương</p>
+														<p
+															v-bind:class="(specific[5]>=2 && specific[5]<4) ? 'buff-active' : 'buff-inactive'">
+															(2) 1
+															đế chế ngẫu nhiên</p>
+														<p v-bind:class="(specific[5]>=4) ? 'buff-active' : 'buff-inactive'">(4) Tất
+															cả
+															đế chế</p>
+													</div>
+													<div class="specific-buff" v-if="specific[6]>=3">
+														<span class="specific-title-buff">Quý tộc - Noble
+															<span>({{specific[6]}})</span>
+															<!-- <span v-if="specific[6]>=3 && specific[6]<6">(3)</span><span v-if="specific[6]==6">(6)</span> -->
+														</span>
+														<p>cộng 100 giáp và hồi 35 máu mỗi đòn đánh</p>
+														<p
+															v-bind:class="(specific[6]>=3 && specific[6]<6) ? 'buff-active' : 'buff-inactive'">
+															(3) 1
+															đồng minh ngẫu nhiên</p>
+														<p v-bind:class="(specific[6]>=6) ? 'buff-active' : 'buff-inactive'">(6) Tất
+															cả
+															đồng minh
+														</p>
+													</div>
+													<div class="specific-buff" v-if="specific[7]==1 || specific[7]==4">
+														<span class="specific-title-buff">Nhẫn giả - Ninja
+															<span>({{specific[7]}})</span>
+															<!-- <span v-if="specific[7]==1">(1)</span><span v-if="specific[7]==4">(4)</span> -->
+														</span>
+														<p v-bind:class="(specific[7]==1) ? 'buff-active' : 'buff-inactive'">(1)
+															Cộng
+															40% sát thương
+															đòn đánh</p>
+														<p v-bind:class="(specific[7]==4) ? 'buff-active' : 'buff-inactive'">(4) Tất
+															cả
+															nhẫn giả
+															Cộng 80% sát thương đòn đánh</p>
+													</div>
+													<div class="specific-buff" v-if="specific[8]>=3">
+														<span class="specific-title-buff">Hải tặc - Pirate
+															<span>({{specific[8]}})</span></span>
+														<p>Kiếm thêm tối đa 4 vàng khi giao chiến với người chơi khác</p>
+													</div>
+													<div class="specific-buff" v-if="specific[9]>=2">
+														<span class="specific-title-buff">Ma - Phantom
+															<span>({{specific[9]}})</span></span>
+														<p>Ngẫu nhiên nguyền rủa 1 kẻ địch khiến máu kẻ đó còn 100</p>
+													</div>
+													<div class="specific-buff" v-if="specific[10]>=2">
+														<span class="specific-title-buff">Hoang dã - Wild
+															<span>({{specific[10]}})</span>
+															<!-- <span v-if="specific[10]>=2 && specific[10]<4">(2)</span><span v-if="specific[10]>=4">(4)</span> -->
+														</span>
+														<p>Đòn đánh tích nộ (tối đa 5 nộ), mỗi nộ cho 8% tốc đánh</p>
+														<p
+															v-bind:class="(specific[10]>=2 && specific[10]<4) ? 'buff-active' : 'buff-inactive'">
+															(2)
+															Chỉ đồng minh Hoang dã</p>
+														<p v-bind:class="(specific[10]>=4) ? 'buff-active' : 'buff-inactive'">(4)
+															Toàn
+															bộ đồng minh
+														</p>
+													</div>
+													<div class="specific-buff" v-if="specific[11]>=3">
+														<span class="specific-title-buff">Hư không - Void
+															<span>({{specific[11]}})</span></span>
+														<p>Tất cả đòn đánh bỏ qua 50% giáp của kẻ địch</p>
+													</div>
+													<div class="specific-buff" v-if="specific[12]>=3">
+														<span class="specific-title-buff">Yordle <span>({{specific[12]}})</span>
+															<!-- <span v-if="specific[12]>=3 && specific[12]<6">(3)</span><span v-if="specific[12]>=6">(6)</span> -->
+														</span>
+														<p>Đòn đánh lên Yordle có tỉ lệ trượt</p>
+														<p
+															v-bind:class="(specific[12]>=3 && specific[12]<6) ? 'buff-active' : 'buff-inactive'">
+															(3)
+															25% tỉ lệ trượt</p>
+														<p v-bind:class="(specific[12]>=6) ? 'buff-active' : 'buff-inactive'">(6)
+															60% tỉ
+															lệ trượt
+														</p>
+													</div>
+													<!-- class -->
+													<div class="class-buff" v-if="classPassive[0]>=3">
+														<span class="class-title-buff">Sát thủ - Assassin
+															<span>({{classPassive[0]}})</span>
+															<!-- <span v-if="classPassive[0]>=3 && classPassive[0]<6">(3)</span><span v-if="classPassive[0]>=6">(6)</span> -->
+														</span>
+														<p>Sát thủ có thêm sát thương chí mạng</p>
+														<p
+															v-bind:class="(classPassive[0]>=3 && classPassive[0]<6) ? 'buff-active' : 'buff-inactive'">
+															(3) +150% sát thương chí mạng</p>
+														<p v-bind:class="(classPassive[0]>=6) ? 'buff-active' : 'buff-inactive'">(6)
+															+350% sát
+															thương chí mạng</p>
+													</div>
+													<div class="class-buff" v-if="classPassive[1]>=3">
+														<span class="class-title-buff">Kiếm khách - Baldemaster
+															<span>({{classPassive[1]}})</span>
+															<!-- <span v-if="classPassive[1]>=3 && classPassive[1]<6">(3)</span><span v-if="classPassive[1]>=6">(6)</span> -->
+														</span>
+														<p>Kiếm khách có 45% tỉ lệ đánh thêm lần nữa</p>
+														<p
+															v-bind:class="(classPassive[1]>=3 && classPassive[1]<6) ? 'buff-active' : 'buff-inactive'">
+															(3) thêm 1 lần đánh</p>
+														<p v-bind:class="(classPassive[1]>=6) ? 'buff-active' : 'buff-inactive'">(6)
+															thêm 2 lần đánh
+														</p>
+													</div>
+													<div class="class-buff" v-if="classPassive[2]>=2">
+														<span class="class-title-buff">Đấu sĩ - Brawler
+															<span>({{classPassive[2]}})</span>
+															<!-- <span v-if="classPassive[2]>=2 && classPassive[2]<4">(2)</span><span v-if="classPassive[2]>=4">(4)</span> -->
+														</span>
+														<p>Đấu sĩ có thêm máu tối đa</p>
+														<p
+															v-bind:class="(classPassive[2]>=2 && classPassive[2]<4) ? 'buff-active' : 'buff-inactive'">
+															(2) 300 máu</p>
+														<p v-bind:class="(classPassive[2]>=4) ? 'buff-active' : 'buff-inactive'">(4)
+															700
+															máu</p>
+													</div>
+													<div class="class-buff" v-if="classPassive[3]>=3">
+														<span class="class-title-buff">Nguyên tố - Elementalist
+															<span>({{classPassive[3]}})</span></span>
+														<p>Nhận gấp đôi năng lượng từ đòn đánh</p>
+														<p>(3) lúc bắt đầu giao chiến triệu hồi 1 người đá</p>
+													</div>
+													<div class="class-buff" v-if="classPassive[4]>=2">
+														<span class="class-title-buff">Hộ vệ - Guardian
+															<span>({{classPassive[4]}})</span></span>
+														<p>Hai Hộ Vệ trong đội hình sẽ tăng giáp cho chính họ và những đồng mình
+															đứng
+															xung quanh họ
+															khi trận chiến bắt đầu.</p>
+													</div>
+													<div class="class-buff" v-if="classPassive[5]>=2">
+														<span class="class-title-buff">Xạ thủ - Gunslinger
+															<span>({{classPassive[5]}})</span>
+															<!-- <span v-if="classPassive[5]>=2 && classPassive[5]<4">(2)</span><span v-if="classPassive[5]>=4">(4)</span><span v-if="classPassive[5]>=6">(6)</span> -->
+														</span>
+														<p>Sau khi tấn công xạ thủ 50% tỉ lệ đánh thêm</p>
+														<p
+															v-bind:class="(classPassive[5]>=2 && classPassive[5]<4) ? 'buff-active' : 'buff-inactive'">
+															(2) bắn 1 kẻ địch ngẫu nhiên</p>
+														<p v-bind:class="(classPassive[5]>=4) ? 'buff-active' : 'buff-inactive'">(4)
+															bắn
+															3 kẻ địch ngẫu nhiên</p>
+													</div>
+													<div class="class-buff" v-if="classPassive[6]>=2">
+														<span class="class-title-buff">Hiệp sĩ - Knight
+															<span>({{classPassive[6]}})</span>
+															<!-- <span v-if="classPassive[6]>=2 && classPassive[6]<4">(2)</span><span v-if="classPassive[6]>=4 && classPassive[6]<6">(4)</span><span v-if="classPassive[6]>=6">(6)</span> -->
+														</span>
+														<p>Chặn sát thương từ đòn đánh</p>
+														<p
+															v-bind:class="(classPassive[6]>=2 && classPassive[6]<4) ? 'buff-active' : 'buff-inactive'">
+															(2) 20 sát thương chặn được</p>
+														<p
+															v-bind:class="(classPassive[6]>=4 && classPassive[6]<6) ? 'buff-active' : 'buff-inactive'">
+															(4) 40 sát thương chặn được</p>
+														<p v-bind:class="(classPassive[6]>=6) ? 'buff-active' : 'buff-inactive'">(6)
+															80
+															sát thương
+															chặn được</p>
+													</div>
+													<div class="class-buff" v-if="classPassive[7]>=2">
+														<span class="class-title-buff">Cung thủ - Ranger
+															<span>({{classPassive[7]}})</span>
+															<!-- <span v-if="classPassive[7]>=2 && classPassive[7]<4">(2)</span><span v-if="classPassive[7]>=4">(4)</span> -->
+														</span>
+														<p>Cung thủ có tỉ lệ nhân đôi tốc độ đánh trong mỗi 3 giây, trong 3 giây kế
+															tiếp
+														</p>
+														<p
+															v-bind:class="(classPassive[7]>=2 && classPassive[7]<4) ? 'buff-active' : 'buff-inactive'">
+															(2) 25% tỉ lệ nhân đôi tốc độ đánh</p>
+														<p v-bind:class="(classPassive[7]>=4) ? 'buff-active' : 'buff-inactive'">(4)
+															65%
+															tỉ lệ nhân
+															đôi tốc độ đánh</p>
+													</div>
+													<div class="class-buff" v-if="classPassive[8]>=3">
+														<span class="class-title-buff">Hóa hình - Shapeshifter
+															<span>({{classPassive[8]}})</span></span>
+														<p>Hóa hình được cộng máu khi biến đổi</p>
+														<p>(3) 60% máu tối đa</p>
+													</div>
+													<div class="class-buff" v-if="classPassive[9]>=3">
+														<span class="class-title-buff">Pháp sư - Sorcerer
+															<span>({{classPassive[9]}})</span>
+															<!-- <span v-if="classPassive[9]>=3 && classPassive[9]<6">(3)</span><span v-if="classPassive[9]>=6">(6)</span> -->
+														</span>
+														<p>Pháp sư được tăng gấp đôi năng lượng từ đòn đánh, đồng minh được tăng sát
+															thương kỹ năng
+														</p>
+														<p
+															v-bind:class="(classPassive[9]>=3 && classPassive[9]<6) ? 'buff-active' : 'buff-inactive'">
+															(3) 35% sát thương kỹ năng</p>
+														<p v-bind:class="(classPassive[9]>=6) ? 'buff-active' : 'buff-inactive'">(6)
+															100% sát thương
+															kỹ năng</p>
+													</div>
+													<hr>
+													<div class="buff-nonactive" v-if="displayBuffNonactive">
+														<h4 class="text-center">Buff chưa kích hoạt</h4>
+														<div class="specific-buff" v-if="specific[0]<2 && specific[0]>0">
+															<span class="specific-title-buff">Ác quỷ - Demon
+																<span>({{specific[0]}})</span></span>
+															<p>Đòn đánh có của ác quỷ có tỉ lệ đốt năng lượng và gây sát thương
+																chuẩn
+																tương ứng</p>
+															<p class="buff-inactive">(2) 25% tỉ lệ đốt năng lượng</p>
+															<p class="buff-inactive">(4) 50% tỉ lệ đốt năng lượng</p>
+															<p class="buff-inactive">(6) 85% tỉ lệ đốt năng lượng</p>
+														</div>
+														<div class="specific-buff" v-if="specific[1]==1">
+															<span class="specific-title-buff">Rồng - Dragon
+																<span>({{specific[1]}})</span></span>
+															<p>Khi hai tướng rồng xuất hiện trong đội hình, chúng sẽ được miễn nhiễm
+																sát
+																thương
+																phép.</p>
+														</div>
+														<div class="specific-buff" v-if="specific[3]==1">
+															<span class="specific-title-buff">Băng quốc - Gracial
+																<span>({{specific[3]}})</span></span>
+															<p>Đòn đánh của băng quốc có tỉ lệ làm choáng 2 giấy</p>
+															<p class="buff-inactive">(2) 20% tỉ lệ choáng</p>
+															<p class="buff-inactive">(4) 30% tỉ lệ choáng</p>
+															<p class="buff-inactive">(6) 45% tỉ lệ choáng</p>
+														</div>
+														<div class="specific-buff" v-if="specific[5]==1">
+															<span class="specific-title-buff">Đế chế - Imperial
+																<span>({{specific[5]}})</span></span>
+															<p>Gây gấp đôi sát thương</p>
+															<p class="buff-inactive">(2) 1 đế chế ngẫu nhiên</p>
+															<p class="buff-inactive">(4) Tất cả đế chế</p>
+														</div>
+														<div class="specific-buff" v-if="specific[6]<3 && specific[6]>0">
+															<span class="specific-title-buff">Quý tộc - Noble
+																<span>({{specific[6]}})</span></span>
+															<p>cộng 100 giáp và hồi 35 máu mỗi đòn đánh</p>
+															<p class="buff-inactive">(3) 1 đồng minh ngẫu nhiên</p>
+															<p class="buff-inactive">(6) Tất cả đồng minh</p>
+														</div>
+														<div class="specific-buff" v-if="specific[7]<4 && specific[7]>1">
+															<span class="specific-title-buff">Nhẫn giả - Ninja
+																<span>({{specific[7]}})</span></span>
+															<p class="buff-inactive">(1) Cộng 40% sát
+																thương đòn đánh</p>
+															<p class="buff-inactive">(4) Tất cả nhẫn giả
+																Cộng 80% sát thương đòn đánh</p>
+														</div>
+														<div class="specific-buff" v-if="specific[8]<3 && specific[8]>0">
+															<span class="specific-title-buff">Hải tặc - Pirate
+																<span>({{specific[8]}})</span></span>
+															<p class="buff-inactive">Kiếm thêm tối đa 4 vàng khi giao chiến với
+																người
+																chơi khác</p>
+														</div>
+														<div class="specific-buff" v-if="specific[9]==1">
+															<span class="specific-title-buff">Ma - Phantom
+																<span>({{specific[9]}})</span></span>
+															<p class="buff-inactive">Ngẫu nhiên nguyền rủa 1 kẻ địch khiến máu kẻ đó
+																còn
+																100</p>
+														</div>
+														<div class="specific-buff" v-if="specific[10]==1">
+															<span class="specific-title-buff">Hoang dã - Wild
+																<span>({{specific[10]}})</span>
+															</span>
+															<p>Đòn đánh tích nộ (tối đa 5 nộ), mỗi nộ cho 8% tốc đánh</p>
+															<p class="buff-inactive">(2) Chỉ đồng minh Hoang dã</p>
+															<p class="buff-inactive">(4) Toàn bộ đồng minh</p>
+														</div>
+														<div class="specific-buff" v-if="specific[11]<3 && specific[11]>0">
+															<span class="specific-title-buff">Hư không - Void
+																<span>({{specific[11]}})</span></span>
+															<p class="buff-inactive">Tất cả đòn đánh bỏ qua 50% giáp của kẻ địch</p>
+														</div>
+														<div class="specific-buff" v-if="specific[12]<3 && specific[12]>0">
+															<span class="specific-title-buff">Yordle <span>({{specific[12]}})</span>
+															</span>
+															<p>Đòn đánh lên Yordle có tỉ lệ trượt</p>
+															<p class="buff-inactive">(3) 25% tỉ lệ trượt</p>
+															<p class="buff-inactive">(6) 60% tỉ lệtrượt</p>
+														</div>
+														<!-- buff class nonactive -->
+														<div class="class-buff" v-if="classPassive[0]<3 && classPassive[0]>0">
+															<span class="class-title-buff">Sát thủ - Assassin
+																<span>({{classPassive[0]}})</span>
+															</span>
+															<p>Sát thủ có thêm sát thương chí mạng</p>
+															<p class="buff-inactive">(3) +150% sát thương chí mạng</p>
+															<p class="buff-inactive">(6) +350% sátthương chí mạng</p>
+														</div>
+														<div class="class-buff" v-if="classPassive[1]>0 && classPassive[1]<3">
+															<span class="class-title-buff">Kiếm khách - Baldemaster
+																<span>({{classPassive[1]}})</span></span>
+															<p>Kiếm khách có 45% tỉ lệ đánh thêm lần nữa</p>
+															<p class="buff-inactive">(3) thêm 1 lần đánh</p>
+															<p class="buff-inactive">(6) thêm 2 lần đánh</p>
+														</div>
+														<div class="class-buff" v-if="classPassive[2]==1">
+															<span class="class-title-buff">Đấu sĩ - Brawler
+																<span>({{classPassive[2]}})</span></span>
+															<p>Đấu sĩ có thêm máu tối đa</p>
+															<p class="buff-inactive">(2) 300 máu</p>
+															<p class="buff-inactive">(4) 700 máu</p>
+														</div>
+														<div class="class-buff" v-if="classPassive[3]>0 && classPassive[3]<3">
+															<span class="class-title-buff">Nguyên tố -
+																Elementalist<span>({{classPassive[3]}})</span></span>
+															<p>Nhận gấp đôi năng lượng từ đòn đánh</p>
+															<p class="buff-inactive">(3) lúc bắt đầu giao chiến triệu hồi 1 người đá
+															</p>
+														</div>
+														<div class="class-buff" v-if="classPassive[4]==1">
+															<span class="class-title-buff">Hộ vệ - Guardian
+																<span>({{classPassive[4]}})</span></span>
+															<p class="buff-inactive">Hai Hộ Vệ trong đội hình sẽ tăng giáp cho chính
+																họ
+																và những
+																đồng
+																mình đứng xung quanh họ
+																khi trận chiến bắt đầu.</p>
+														</div>
+														<div class="class-buff" v-if="classPassive[5]==1">
+															<span class="class-title-buff">Xạ thủ - Gunslinger
+																<span>({{classPassive[5]}})</span></span>
+															<p>Sau khi tấn công xạ thủ 50% tỉ lệ đánh thêm</p>
+															<p class="buff-inactive">(2) bắn 1 kẻ địch ngẫu nhiên</p>
+															<p class="buff-inactive">(4) bắn 3 kẻ địch ngẫu nhiên</p>
+														</div>
+														<div class="class-buff" v-if="classPassive[6]==1">
+															<span class="class-title-buff">Hiệp sĩ - Knight
+																<span>({{classPassive[6]}})</span></span>
+															<p>Chặn sát thương từ đòn đánh</p>
+															<p class="buff-inactive">(2) 20 sát thương chặn được</p>
+															<p class="buff-inactive">(4) 40 sát thương chặn được</p>
+															<p class="buff-inactive">(6) 80 sát thương chặn được</p>
+														</div>
+														<div class="class-buff" v-if="classPassive[7]==1">
+															<span class="class-title-buff">Cung thủ - Ranger
+																<span>({{classPassive[7]}})</span>
+															</span>
+															<p>Cung thủ có tỉ lệ nhân đôi tốc độ đánh trong mỗi 3 giây, trong 3 giây
+																kế
+																tiếp</p>
+															<p class="buff-inactive">(2) 25% tỉ lệ nhân đôi tốc độ đánh</p>
+															<p class="buff-inactive">(4) 65% tỉ lệ nhân đôi tốc độ đánh</p>
+														</div>
+														<div class="class-buff" v-if="classPassive[8]<3 && classPassive[8]>0">
+															<span class="class-title-buff">Hóa hình -
+																Shapeshifter<span>({{classPassive[8]}})</span></span>
+															<p>Hóa hình được cộng máu khi biến đổi</p>
+															<p class="buff-inactive">(3) 60% máu tối đa</p>
+														</div>
+														<div class="class-buff" v-if="classPassive[9]<3 && classPassive[9]>0">
+															<span class="class-title-buff">Pháp sư - Sorcerer
+																<span>({{classPassive[9]}})</span></span>
+															<p>Pháp sư được tăng gấp đôi năng lượng từ đòn đánh, đồng minh được tăng
+																sát
+																thương kỹ
+																năng
+															</p>
+															<p class="buff-inactive">(3) 35% sát thương kỹ năng</p>
+															<p class="buff-inactive">(6) 100% sát thương kỹ năng</p>
+														</div>
+													</div>
+													<p class="text-center">
+														<button class="button-show-buff" v-on:click="showBuffNonactive()"
+															v-if="!displayBuffNonactive">Hiện buff chưa kích hoạt</button>
+														<button class="button-show-buff" v-on:click="showBuffNonactive()"
+															v-if="displayBuffNonactive">Ẩn buff chưa kích hoạt</button>
+													</p>
+												</div>
+												<div class="col-md-6">goi y tuong</div>
+									</div>
+								</div>
+							</div>
 						</div>
 						<div id="items" class="tab-pane fade">
 							<table class="table">
@@ -1106,6 +1017,21 @@
 						heroId: -1,
 						tier: 0,
 						avartar: "",
+					},
+					{
+						heroId: -1,
+						tier: 0,
+						avartar: "",
+					},
+					{
+						heroId: -1,
+						tier: 0,
+						avartar: "",
+					},
+					{
+						heroId: -1,
+						tier: 0,
+						avartar: "",
 					}
 				],
 				classPassive: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0
@@ -1139,9 +1065,37 @@
 				itemPickedIsCombind: false,
 				itemPickedDisplayData: {},
 				arrItem: data_item,
-				displayBuffNonactive: false
+				arrChampion: data_hero,
+				arrChampionDisplay: [],
+				displayBuffNonactive: false,
+				filterOrigin: -1,
+				filterClass: -1,
+			},
+			created: function() {
+				this.arrChampion = this.sortData();
+				this.arrChampionDisplay = this.arrChampion;
 			},
 			methods: {
+				sortData: function () {
+					return data_hero.sort( function ( a, b ) {
+						if ( a.tier < b.tier ){
+							return -1;
+						}
+						else if(a.tier == b.tier){
+							if ( a.name < b.name ){
+								return -1;
+							}
+							if ( a.name > b.name ){
+								return 1;
+							}
+						}
+						if ( a.tier > b.tier ){
+							return 1;
+						}
+						return 0;
+						} 
+					);
+				},
 				addData: function (index, i_class, i_specific) {
 					var newSynergy = [];
 					var newHero = {
@@ -1157,7 +1111,7 @@
 						}
 					}
 					let obj = newSynergy.find(o => o.heroId === index);
-					if (newSynergy.length < 9 && obj === undefined) {
+					if (newSynergy.length < 12 && obj === undefined) {
 						newSynergy.push(newHero);
 						if (Array.isArray(i_class)) {
 							// console.log('multi specific');
@@ -1178,7 +1132,7 @@
 						else {
 							this.specific[i_specific] = this.specific[i_specific] + 1;
 						}
-						console.log(this.specific);
+						// console.log(this.specific);
 					}
 					this.updateData(newSynergy);
 				},
@@ -1199,14 +1153,14 @@
 					if (Array.isArray(i_specific)) {
 						// console.log('multi specific');
 						for (var i = 0; i < i_specific.length; i++) {
-							console.log(i_specific[i]);
+							// console.log(i_specific[i]);
 							this.specific[i_specific[i]] = this.specific[i_specific[i]] - 1;
 						}
 					}
 					else {
 						this.specific[i_specific] = this.specific[i_specific] - 1;
 					}
-					console.log(this.specific);
+					// console.log(this.specific);
 					this.updateData(arr);
 				},
 				updateData: function (array) {
@@ -1215,7 +1169,7 @@
 						tier: 0,
 						avartar: "",
 					}
-					let loopNumber = 9 - array.length;
+					let loopNumber = 12 - array.length;
 					for (var i = 0; i < loopNumber; i++) {
 						array.push(nullHero);
 					}
@@ -1223,7 +1177,7 @@
 				},
 				pickItem: function (id_item) {
 					let itemPicked = data_item[id_item];
-					console.log(itemPicked);
+					// console.log(itemPicked);
 					this.itemPickedDisplayData = itemPicked;
 					if (itemPicked.type == "base") {
 						this.itemPickedIsBase = true;
@@ -1236,6 +1190,63 @@
 				},
 				showBuffNonactive: function () {
 					this.displayBuffNonactive = !this.displayBuffNonactive;
+				},
+				changeFillter: function (type,name) {
+					let x = this.arrChampion.filter(function (value) {
+						if(type=='origin'){
+							if(Array.isArray(value.sId)){
+								if(value.sId[0]==name){
+									return value.sId[0]==name;
+								}
+								if(value.sId[1]==name){
+									return value.sId[1]==name;
+								}
+							}
+							else{
+								return value.sId == name;
+							}
+						}
+						else if(type=='class'){
+							if(Array.isArray(value.cId)){
+								if(value.cId[0]==name){
+									return value.cId[0]==name;
+								}
+								if(value.cId[1]==name){
+									return value.cId[1]==name;
+								}
+							}
+							else{
+								return value.cId == name;
+							}
+						}
+					});
+					if(type=='class'){
+						this.filterOrigin = -1;
+						if(name==this.filterClass){
+							this.filterClass = -1;
+							this.arrChampionDisplay = this.arrChampion;
+						}
+						else{
+							this.filterClass = name;
+							this.arrChampionDisplay = x;
+						}
+					}
+					else if(type=='origin'){
+						this.filterClass = -1;
+						if(name==this.filterOrigin){
+							this.filterOrigin = -1;
+							this.arrChampionDisplay = this.arrChampion;
+						}
+						else{
+							this.filterOrigin = name;
+							this.arrChampionDisplay = x;
+						}
+					}
+					
+					// console.log(x)
+					console.log(this.filterClass);
+					console.log(this.filterOrigin);
+					// console.log('click '+type+'-'+name); 
 				},
 			}
 		})
