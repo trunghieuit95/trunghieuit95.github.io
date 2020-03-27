@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Xếp gạch</title>
+    <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+    <script src="https://code.createjs.com/1.0.0/tweenjs.min.js"></script>
+    <script>
+
+        // var stage, circle, box, scoreBox;
+        var nextTetromioIndex;
+        var perTime, score = 0;
+        var gameOver = false;
+        var bag = shuffleArray([0, 1, 2, 3, 4, 5, 6]);
+        var listColor = ['rgb(255, 87, 34)', 'rgb(63, 81, 181)', 'rgb(255, 235, 59)', 'rgb(156, 39, 176)', 'rgb(76, 175, 80)', 'rgb(183, 28, 28)', 'rgb(0, 188, 212)']
+
+        function init() {
+            stage = new createjs.Stage("demoCanvas");
+            boardWidth = 10
+            boardHeight = 23
+            currentBoard = new Array(this.boardHeight).fill(0).map(() => new Array(this.boardWidth).fill(0))
+            landedBoard = new Array(this.boardHeight).fill(0).map(() => new Array(this.boardWidth).fill(0))
+            currentTetromino = randomTetromino();
+            // newTet = randomTetromino();
+            // console.log(currentTetromino, currentTetromino.__proto__.constructor.color);
+
+            // circle = new createjs.Shape();
+            bgScreen = new createjs.Shape();
+            box = new createjs.Shape();
+            bgButtonStart = new createjs.Shape();
+            scoreBox = new createjs.Text("Score : " + score, "20px Arial", "#ff7700");
+            gameStart = new createjs.Text("Start", "40px Arial", "#e1f5fe");
+            buttonStart = new createjs.Container();
+            gameTitle = new createjs.Text("Xếp Gạch", "bold 60px Arial", "#33691e");
+            gameOverContainer = new createjs.Container();
+            gameOverText = new createjs.Text("Game Over", "bold 50px Arial", "#f1f8e9");
+            // buttonRestart = new createjs.Container();
+            bgButtonRestart = new createjs.Shape();
+            labelButtonRestart = new createjs.Text("Restart", "20px Arial", "#e1f5fe");
+            // buttonQuit = new createjs.Container();
+            bgButtonQuit = new createjs.Shape();
+            labelButtonQuit = new createjs.Text("Quit", "20px Arial", "#e1f5fe");
+            animationGetScore = new createjs.Shape();
+            nextTetromioBox = new createjs.Shape();
+            titleView();
+        }
+
+        function tick(event) {
+            if (!event.paused) {
+                if (perTime !== Math.floor(event.time / 500) && !gameOver) {
+                    perTime = Math.floor(event.time / 500);
+                    progress();
+                    updateCurrentBoard();
+                    draw();
+                }
+                // draw();
+                stage.update(event); // important!!
+            }
+        }
+
+        // game loop
+        function progress() {
+            let nextTetromino = new currentTetromino.constructor(currentTetromino.row + 1, currentTetromino.col, currentTetromino.angle)
+            if (!bottomOverlapped(nextTetromino) && !landedOverlapped(nextTetromino)) {
+                currentTetromino.fall()
+            } else {
+                mergeCurrentTetromino();
+                if (currentBoard[3][4] > 0 || currentBoard[3][5] > 0) {
+                    console.log('gameover');
+                    gameOver = true;
+                }
+                else {
+                    currentTetromino = randomTetromino();
+                }
+            }
+        }
+
+        // render view
+        function draw() {
+            if (gameOver) {
+                // gameStart.text = "Game Over"
+                gameOverView();
+            } else {
+                stage.removeChild(scoreBox);
+                box.graphics.clear();
+                box.graphics.beginStroke("black").drawRect(0, 0, 305, 605);
+                scoreBox.text = "Score : " + score;
+                scoreBox.font = "20px Arial";
+                scoreBox.color = "#ff7700";
+                scoreBox.x = 310;
+                scoreBox.y = 200;
+                nextTetromioBox.graphics.clear();
+                nextTetromioBox.graphics.beginStroke("black").drawRect(315, 65, 125, 125);
+                renderNextTet(nextTetromioIndex);
+                scoreBox.textAlign = "none";
+                stage.addChild(scoreBox, nextTetromioBox);
+                for (let y = 3; y < boardHeight; y++) {
+                    for (let x = 0; x < boardWidth; x++) {
+                        box.graphics.beginStroke("black").drawRect((5 + (30 * x)), (5 + (30 * (y - 3))), 25, 25);
+                        box.graphics.beginFill("white").drawRect((5 + (30 * x)), (5 + (30 * (y - 3))), 25, 25);
+                        if (currentBoard[y][x] > 0) {
+                            if (currentBoard[y][x] < 8) {
+                                box.graphics.beginFill(listColor[currentBoard[y][x] - 1]).drawRect((5 + (30 * x)), (5 + (30 * (y - 3))), 25, 25);
+                            } else {
+                                box.graphics.beginFill("black").drawRect((5 + (30 * x)), (5 + (30 * (y - 3))), 25, 25);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        function bottomOverlapped(tetromino) {
+            if (tetromino.row + tetromino.height > this.boardHeight) {
+                return true
+            } else {
+                return false
+            }
+        }
+
+        function landedOverlapped(tetromino) {
+            for (let i = 0; i < tetromino.height; i++) {
+                for (let j = 0; j < tetromino.width; j++) {
+                    if (tetromino.shape[i][j] > 0 &&
+                        landedBoard[tetromino.row + i][tetromino.col + j] > 0) {
+                        return true
+                    }
+                }
+            }
+            return false
+        }
+
+        function mergeCurrentTetromino() {
+            for (let i = 0; i < this.currentTetromino.height; i++) {
+                for (let j = 0; j < this.currentTetromino.width; j++) {
+                    if (this.currentTetromino.shape[i][j] > 0) {
+                        landedBoard[this.currentTetromino.row + i][this.currentTetromino.col + j] = this.currentTetromino.shape[i][j];
+                    }
+                }
+            }
+
+            for (let i = 0; i < boardHeight; i++) {
+                let checkClear = 0;
+                for (let j = 0; j < boardWidth; j++) {
+                    if (landedBoard[i][j] > 0) {
+                        checkClear++;
+                        if (checkClear === 10) {
+                            getScoreAnimation(i);
+                        }
+                    }
+                }
+            }
+        }
+
+        function updateCurrentBoard() {
+            for (let i = 0; i < boardHeight; i++) {
+                for (let j = 0; j < boardWidth; j++) {
+                    currentBoard[i][j] = landedBoard[i][j];
+                }
+            }
+
+            for (let i = 0; i < currentTetromino.height; i++) {
+                for (let j = 0; j < currentTetromino.width; j++) {
+                    if (currentTetromino.shape[i][j] > 0) {
+                        currentBoard[currentTetromino.row + i][currentTetromino.col + j] = currentTetromino.shape[i][j]
+                    }
+                }
+            }
+        }
+
+        function randomTetromino() {
+            let randNum = bag[bag.length - 1];
+            bag.pop();
+            if (bag.length === 0) {
+                bag = [0, 1, 2, 3, 4, 5, 6];
+                bag = shuffleArray(bag);
+            }
+            nextTetromioIndex = bag[bag.length - 1];
+            switch (randNum) {
+                case 0:
+                    return new LShape(1, 4)
+                case 1:
+                    return new JShape(1, 4)
+                case 2:
+                    return new OShape(2, 4)
+                case 3:
+                    return new TShape(2, 4)
+                case 4:
+                    return new SShape(2, 4)
+                case 5:
+                    return new ZShape(2, 4)
+                case 6:
+                    return new IShape(0, 4)
+            }
+        }
+
+        function shuffleArray(array) {
+            for (var i = array.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+            }
+            return array;
+        }
+
+        function titleView() {
+            bgScreen.graphics.beginFill("#fce4ec").drawRect(0, 0, 450, 605);
+            bgScreen.graphics.setStrokeStyle(10);
+            for (let i = 0; i < 5; i++) {
+                for (let j = 0; j < 12; j++) {
+                    if (j % 2 === 0) {
+                        bgScreen.graphics.beginStroke("white").drawRect((100 * i), (50 * j), 100, 50);
+                    }
+                    else {
+                        bgScreen.graphics.beginStroke("white").drawRect((100 * i) - 50, (50 * j), 100, 50);
+                    }
+                }
+            }
+            bgButtonStart.graphics.beginFill("#039be5").drawRoundRect(0, 0, 150, 70, 35);
+            buttonStart.x = 150;
+            buttonStart.y = 250;
+            gameStart.textAlign = "center";
+            gameStart.textBaseline = "middle";
+            gameStart.x = 150 / 2;
+            gameStart.y = 70 / 2;
+            gameTitle.x = 100;
+            gameTitle.y = 150;
+            buttonStart.addChild(bgButtonStart, gameStart);
+            stage.addChild(bgScreen, buttonStart, gameTitle);
+            stage.update();
+            buttonStart.addEventListener("click", function (event) {
+                gameStartNow();
+            });
+        }
+
+        function gameOverView() {
+            stage.removeChild(scoreBox,nextTetromioBox);
+            createjs.Ticker.paused = true;
+            gameOverContainer.x = 150;
+            gameOverContainer.y = 200;
+            gameOverText.textAlign = "center";
+            gameOverText.x = 150 / 2;
+            scoreBox.textAlign = "center";
+            scoreBox.x = 150 / 2;
+            scoreBox.y = 65;
+            scoreBox.text = 'Your score : ' + score;
+            scoreBox.color = '#f1f8e9';
+            bgButtonRestart.graphics.beginFill("#039be5").drawRoundRect(-50, 100, 100, 50, 25);
+            labelButtonRestart.x = -33;
+            labelButtonRestart.y = 115;
+            bgButtonQuit.graphics.beginFill("#039be5").drawRoundRect(100, 100, 100, 50, 25);
+            labelButtonQuit.x = 133;
+            labelButtonQuit.y = 115;
+            gameOverContainer.addChild(gameOverText, scoreBox, bgButtonRestart, bgButtonQuit, labelButtonRestart, labelButtonQuit);
+            stage.addChild(gameOverContainer);
+            box.graphics.beginFill("rgba(0, 0, 0, 0.6)").drawRect(0, 0, 450, 605);
+            stage.update();
+            bgButtonRestart.addEventListener("click", function (event) {
+                // console.log('restart');
+                box.graphics.clear();
+                stage.removeChild(gameOverContainer);
+                gameOver = false;
+                setNewGame();
+                gameStartNow();
+            });
+            bgButtonQuit.addEventListener("click", function (event) {
+                // console.log('quit');
+                box.graphics.clear();
+                stage.removeChild(gameOverContainer);
+                gameOver = false;
+                setNewGame();
+                titleView();
+            });
+        }
+
+        function setNewGame() {
+            currentBoard = new Array(this.boardHeight).fill(0).map(() => new Array(this.boardWidth).fill(0))
+            landedBoard = new Array(this.boardHeight).fill(0).map(() => new Array(this.boardWidth).fill(0))
+            currentTetromino = randomTetromino();
+        }
+
+        function gameStartNow() {
+            bgScreen.graphics.clear();
+            bgScreen.graphics.beginStroke("#fce4ec").drawRect(0, 0, 450, 605);
+            stage.removeChild(buttonStart, gameTitle);
+            stage.addChild(box, scoreBox);
+            createjs.Ticker.on("tick", tick);
+            createjs.Ticker.paused = false;
+            createjs.Ticker.setFPS(30);
+        }
+
+        function getScoreAnimation(index) {
+            animationGetScore.graphics.beginFill("rgba(255, 255, 255, 0.5)").drawRect(5, 5 + 30 * (index - 3), 295, 25);
+            stage.addChild(animationGetScore);
+            createjs.Tween.get(animationGetScore)
+                .to({ alpha: 1 }, 200)
+                .to({ alpha: 0 }, 100)
+                .to({ alpha: 1 }, 200)
+                .to({ alpha: 0 }, 100)
+                .to({ alpha: 1 }, 200)
+                .to({ alpha: 0 }, 100, createjs.Ease.getPowIn(2));
+            getScore(index)
+        }
+
+        function getScore(i) {
+            setTimeout(function () {
+                landedBoard.splice(i, 1);
+                let newItem = new Array(boardWidth).fill(0);
+                landedBoard.unshift(newItem);
+                score += 100;
+                checkClear = 0;
+                animationGetScore.graphics.clear();
+            }, 500);
+        }
+
+        class Tetromino {
+            constructor(row, col, angle = 0) {
+                if (this.constructor === Tetromino) {
+                    throw new Error("This is an abstract class.")
+                }
+                this.row = row
+                this.col = col
+                this.angle = angle
+            }
+
+            get shape() {
+                return this.constructor.shapes[this.angle]
+            }
+
+            get width() {
+                return this.shape[0].length
+            }
+
+            get height() {
+                return this.shape.length
+            }
+
+            fall() {
+                this.row += 1
+            }
+
+            rotate() {
+                if (this.angle < 3) {
+                    this.angle += 1
+                } else {
+                    this.angle = 0
+                }
+            }
+
+            move(direction) {
+                if (direction === 'left') {
+                    this.col -= 1
+                } else if (direction === 'right') {
+                    this.col += 1
+                }
+            }
+        }
+
+        class LShape extends Tetromino { }
+
+        LShape.shapes =
+            [[[1, 0],
+            [1, 0],
+            [1, 1]],
+
+            [[1, 1, 1],
+            [1, 0, 0]],
+
+            [[1, 1],
+            [0, 1],
+            [0, 1]],
+
+            [[0, 0, 1],
+            [1, 1, 1]]]
+
+        LShape.color = 'rgb(255, 87, 34)'
+
+        class JShape extends Tetromino { }
+
+        JShape.shapes =
+            [[[0, 2],
+            [0, 2],
+            [2, 2]],
+
+            [[2, 0, 0],
+            [2, 2, 2]],
+
+            [[2, 2],
+            [2, 0],
+            [2, 0]],
+
+            [[2, 2, 2],
+            [0, 0, 2]]]
+
+        JShape.color = 'rgb(63, 81, 181)'
+
+        class OShape extends Tetromino { }
+
+        OShape.shapes =
+            [[[3, 3],
+            [3, 3]],
+
+            [[3, 3],
+            [3, 3]],
+
+            [[3, 3],
+            [3, 3]],
+
+            [[3, 3],
+            [3, 3]]]
+
+        OShape.color = 'rgb(255, 235, 59)'
+
+        class TShape extends Tetromino { }
+
+        TShape.shapes =
+            [[[0, 4, 0],
+            [4, 4, 4]],
+
+            [[4, 0],
+            [4, 4],
+            [4, 0]],
+
+            [[4, 4, 4],
+            [0, 4, 0]],
+
+            [[0, 4],
+            [4, 4],
+            [0, 4]]]
+
+        TShape.color = 'rgb(156, 39, 176)'
+
+        class SShape extends Tetromino { }
+
+        SShape.shapes =
+            [[[0, 5, 5],
+            [5, 5, 0]],
+
+            [[5, 0],
+            [5, 5],
+            [0, 5]],
+
+            [[0, 5, 5],
+            [5, 5, 0]],
+
+            [[5, 0],
+            [5, 5],
+            [0, 5]]]
+
+        SShape.color = 'rgb(76, 175, 80)'
+
+        class ZShape extends Tetromino { }
+
+        ZShape.shapes =
+            [[[6, 6, 0],
+            [0, 6, 6]],
+
+            [[0, 6],
+            [6, 6],
+            [6, 0]],
+
+            [[6, 6, 0],
+            [0, 6, 6]],
+
+            [[0, 6],
+            [6, 6],
+            [6, 0]]]
+
+        ZShape.color = 'rgb(183, 28, 28)'
+
+        class IShape extends Tetromino { }
+
+        IShape.shapes =
+            [[[7],
+            [7],
+            [7],
+            [7]],
+
+            [[7, 7, 7, 7]],
+
+            [[7],
+            [7],
+            [7],
+            [7]],
+
+            [[7, 7, 7, 7]]]
+
+        IShape.color = 'rgb(0, 188, 212)'
+
+        window.addEventListener('keydown', (event) => {
+            switch (event.keyCode) {
+                case 37: // Left
+                    tryMoveLeft()
+                    break
+
+                case 38: // Up
+                    tryRotating()
+                    break
+
+                case 39: // Right
+                    tryMoveRight()
+                    break
+
+                case 40: // Down
+                    tryMoveDown();
+                    break
+            }
+        })
+
+        function tryMoveDown() {
+            if (!gameOver) {
+                progress()
+                updateCurrentBoard()
+                draw()
+            }
+        }
+
+        function leftOverlapped(tetromino) {
+            if (tetromino.col < 0) {
+                return true
+            } else {
+                return false
+            }
+        }
+
+        function rightOverlapped(tetromino) {
+            if (tetromino.col + tetromino.width > boardWidth) {
+                return true
+            } else {
+                return false
+            }
+        }
+
+        function tryMoveLeft() {
+            const tempTetromino = new currentTetromino.constructor(currentTetromino.row, currentTetromino.col - 1, currentTetromino.angle)
+            if (!leftOverlapped(tempTetromino) &&
+                !landedOverlapped(tempTetromino)) {
+                currentTetromino.col -= 1
+                updateCurrentBoard()
+                draw()
+            }
+        }
+
+        function tryMoveRight() {
+            const tempTetromino = new currentTetromino.constructor(currentTetromino.row, currentTetromino.col + 1, currentTetromino.angle)
+            if (!rightOverlapped(tempTetromino) &&
+                !landedOverlapped(tempTetromino)) {
+                currentTetromino.col += 1
+                updateCurrentBoard()
+                draw()
+            }
+        }
+
+        function tryRotating() {
+            const tempTetromino = new currentTetromino.constructor(currentTetromino.row + 1, currentTetromino.col, currentTetromino.angle)
+            tempTetromino.rotate()
+            if (!rightOverlapped(tempTetromino) &&
+                !bottomOverlapped(tempTetromino) &&
+                !landedOverlapped(tempTetromino)) {
+                currentTetromino.rotate()
+                updateCurrentBoard()
+                draw()
+            }
+        }
+        function renderNextTet(id_nextTet) {
+            if (id_nextTet === 0) {
+                nextTetromioBox.graphics.beginStroke("black").drawRect(350, 85, 25, 25);
+                nextTetromioBox.graphics.beginStroke("black").drawRect(350, 115, 25, 25);
+                nextTetromioBox.graphics.beginStroke("black").drawRect(350, 145, 25, 25);
+                nextTetromioBox.graphics.beginStroke("black").drawRect(380, 145, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[0]).drawRect(350, 85, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[0]).drawRect(350, 115, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[0]).drawRect(350, 145, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[0]).drawRect(380, 145, 25, 25);
+            }
+            else if (id_nextTet === 1) {
+                nextTetromioBox.graphics.beginStroke("black").drawRect(380, 85, 25, 25);
+                nextTetromioBox.graphics.beginStroke("black").drawRect(380, 115, 25, 25);
+                nextTetromioBox.graphics.beginStroke("black").drawRect(350, 145, 25, 25);
+                nextTetromioBox.graphics.beginStroke("black").drawRect(380, 145, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[1]).drawRect(380, 85, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[1]).drawRect(380, 115, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[1]).drawRect(350, 145, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[1]).drawRect(380, 145, 25, 25);
+            }
+            else if (id_nextTet === 2) {
+                nextTetromioBox.graphics.beginStroke("black").drawRect(350, 100, 25, 25);
+                nextTetromioBox.graphics.beginStroke("black").drawRect(380, 100, 25, 25);
+                nextTetromioBox.graphics.beginStroke("black").drawRect(350, 130, 25, 25);
+                nextTetromioBox.graphics.beginStroke("black").drawRect(380, 130, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[2]).drawRect(350, 100, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[2]).drawRect(380, 100, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[2]).drawRect(350, 130, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[2]).drawRect(380, 130, 25, 25);
+            }
+            else if (id_nextTet === 3) {
+                nextTetromioBox.graphics.beginStroke("black").drawRect(365, 100, 25, 25);
+                nextTetromioBox.graphics.beginStroke("black").drawRect(335, 130, 25, 25);
+                nextTetromioBox.graphics.beginStroke("black").drawRect(365, 130, 25, 25);
+                nextTetromioBox.graphics.beginStroke("black").drawRect(395, 130, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[3]).drawRect(365, 100, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[3]).drawRect(335, 130, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[3]).drawRect(365, 130, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[3]).drawRect(395, 130, 25, 25);
+            }
+            else if (id_nextTet === 4) {
+                nextTetromioBox.graphics.beginStroke("black").drawRect(335, 100, 25, 25);
+                nextTetromioBox.graphics.beginStroke("black").drawRect(365, 100, 25, 25);
+                nextTetromioBox.graphics.beginStroke("black").drawRect(365, 130, 25, 25);
+                nextTetromioBox.graphics.beginStroke("black").drawRect(395, 130, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[4]).drawRect(335, 100, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[4]).drawRect(365, 100, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[4]).drawRect(365, 130, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[4]).drawRect(395, 130, 25, 25);
+            }
+            else if (id_nextTet === 5) {
+                nextTetromioBox.graphics.beginStroke("black").drawRect(395, 100, 25, 25);
+                nextTetromioBox.graphics.beginStroke("black").drawRect(365, 100, 25, 25);
+                nextTetromioBox.graphics.beginStroke("black").drawRect(365, 130, 25, 25);
+                nextTetromioBox.graphics.beginStroke("black").drawRect(335, 130, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[5]).drawRect(395, 100, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[5]).drawRect(365, 100, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[5]).drawRect(365, 130, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[5]).drawRect(335, 130, 25, 25);
+            }
+            else if (id_nextTet === 6) {
+                nextTetromioBox.graphics.beginStroke("black").drawRect(365, 70, 25, 25);
+                nextTetromioBox.graphics.beginStroke("black").drawRect(365, 100, 25, 25);
+                nextTetromioBox.graphics.beginStroke("black").drawRect(365, 130, 25, 25);
+                nextTetromioBox.graphics.beginStroke("black").drawRect(365, 160, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[6]).drawRect(365, 70, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[6]).drawRect(365, 100, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[6]).drawRect(365, 130, 25, 25);
+                nextTetromioBox.graphics.beginFill(listColor[6]).drawRect(365, 160, 25, 25);
+            }
+            else{
+                console.log('not found id');
+            }
+        }
+    </script>
+</head>
+
+<body onload="init();">
+    <canvas id="demoCanvas" width="450" height="605">
+        alternate content
+    </canvas>
+</body>
+
+</html>
